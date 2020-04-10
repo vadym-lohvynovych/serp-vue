@@ -1,2 +1,15 @@
 node_modules
 dist
+
+artifacts.zip
+
+.DS_Store
+.idea
+/*/bin/
+
+*.min.css
+*.min.css.map
+*.csv
+*.iml
+*.box
+*.log
