@@ -22,7 +22,7 @@ class Api {
 		return await this.getResource(`${this._defaultPath}comics?offset=${offset}?apikey=${this._key}`);
 	}
 
-	async searchComics(title) {
+	async searchComicses(title) {
 		return await this.getResource(`${this._defaultPath}comics?title=${title}&apikey=${this._key}`);
 	}
 }
