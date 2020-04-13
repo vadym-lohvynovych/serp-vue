@@ -1,5 +1,5 @@
 import Vue from "vue";
-import "./app/scss/main.scss";
+import "./app/scss/tailwind.scss";
 import App from "./app/App.vue";
 import store from "./app/store";
 
