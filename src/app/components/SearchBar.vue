@@ -36,6 +36,8 @@ export default {
   methods: {
     ...mapActions(["findComics"]),
     search() {
+      if(this.$route.query.title === this.title) return;
+      
       this.$router.push(`?title=${this.title}`);
       this.findComics(this.title);
     }

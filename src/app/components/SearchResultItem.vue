@@ -5,7 +5,12 @@
       :class="{'opacity-0': item.visibility === 'hidden'}"
     >
       <div class="object-cover object-center">
-        <img class="img mx-auto cursor-pointer w-full" :src="path" alt="search-image" />
+        <img
+          class="img mx-auto cursor-pointer w-full lazy"
+          :src="placeholder"
+          :data-src="path"
+          alt="search-image"
+        />
       </div>
       <h2
         class="title overflow-hidden rounded py-3 lg:py-5 px-1 font-bold text-sm lg:text-md text-center cursor-pointer absolute w-full left-0 bottom-0 bg-gray-600"
@@ -19,10 +24,17 @@
 
 <script>
 import { mapActions } from "vuex";
+import placeholder from "../images/placeholder.jpg";
 
 export default {
   props: {
     item: Object
+  },
+
+  data() {
+    return {
+      placeholder
+    };
   },
 
   computed: {
@@ -57,7 +69,10 @@ export default {
 .title,
 .hover-bg,
 img {
-  transition: 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, filter 0.6s ease-in;
+  &.lazy {
+    filter: blur(5px);
+  }
 }
 .search-result-item {
   overflow: hidden;
