@@ -1,5 +1,9 @@
 <template>
-  <form action="#" class="search-bar flex items-center justify-center" @submit.prevent="search">
+  <form
+    action="#"
+    class="search-bar flex items-center justify-center px-4"
+    @submit.prevent="search"
+  >
     <input
       v-model="title"
       class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
@@ -19,13 +23,27 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      title: "hulk"
+      title: ""
     };
   },
+
+  computed: {
+    urlTitle() {
+      return this.$route.query.title;
+    }
+  },
+
   methods: {
     ...mapActions(["findComics"]),
     search() {
+      this.$router.push(`?title=${this.title}`);
       this.findComics(this.title);
+    }
+  },
+
+  mounted() {
+    if (this.urlTitle) {
+      this.title = this.urlTitle;
     }
   }
 };

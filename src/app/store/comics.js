@@ -15,6 +15,7 @@ export default {
           context.commit('setFetching', false);
         });
     },
+
     makeItemVisible(context, index, interval = 80) {
       context.commit('makeItemVisible', { index, interval });
     }
@@ -23,6 +24,7 @@ export default {
     setFetching(state, value) {
       state.fetching = value;
     },
+
     updateComics(state, comics) {
       const { results, ...rest } = comics;
       state.comics = {
@@ -30,11 +32,13 @@ export default {
         ...rest
       };
     },
+
     makeItemVisible(state, { index, interval }) {
       setTimeout(() => {
         state.comics.items[index].visibility = 'visible';
       }, interval * index + 1);
     },
+
     setError(state, error) {
       state.error = error;
     }
