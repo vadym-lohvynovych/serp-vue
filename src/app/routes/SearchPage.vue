@@ -30,7 +30,7 @@ export default {
   components: {
     SearchBar,
     Loader,
-    searchResultItem
+    SearchResultItem
   },
   methods: mapActions(["findComics"]),
   mounted() {
