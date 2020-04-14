@@ -2,17 +2,16 @@ import api from "../../api";
 
 export default {
 	actions: {
-		searchComicses(context, title) {
+		searchComics(context, title) {
 			context.commit("setFetching", true);
-			api.searchComicses(title)
+			api.searchComics(title)
 				.then(res => {
-					setTimeout(() => {
-						context.commit("updateComicses", res.data);
-						context.commit("setFetching", false);
-					}, 1000);
+					context.commit("updateComics", res.data);
 				})
 				.catch(error => {
 					context.commit("setError", error);
+				})
+				.finally(() => {
 					context.commit("setFetching", false);
 				});
 		}
@@ -21,9 +20,9 @@ export default {
 		setFetching(state, value) {
 			state.fetching = value;
 		},
-		updateComicses(state, comicses) {
-			const { results, ...rest } = comicses;
-			state.comicses = {
+		updateComics(state, comics) {
+			const { results, ...rest } = comics;
+			state.comics = {
 				items: results,
 				...rest
 			};
@@ -33,15 +32,15 @@ export default {
 		}
 	},
 	state: {
-		comicses: null,
+		comics: null,
 		fetching: false,
 		error: false
 	},
 	getters: {
-		allComicses(state) {
-			return state.comicses && state.comicses.items;
+		searchResult(state) {
+			return state.comics && state.comics.items;
 		},
-		areFetching(state) {
+		isLoading(state) {
 			return state.fetching;
 		}
 	}

@@ -1,16 +1,16 @@
 <template>
 	<div class="container mx-auto">
 		<h1 class="text-center text-xl my-5 font-hairline">Here you can find some comics info!</h1>
+
 		<SearchBar />
-		<div v-if="areFetching">
-			<Loader />
-		</div>
-		<div v-else-if="allComicses && allComicses.length">
-			<p class="text-center font-hairline my-8">{{ allComicses.length }}</p>
-		</div>
-		<div v-else-if="allComicses">
-			<p class="text-center font-hairline my-8">Cant find :(</p>
-		</div>
+
+		<Loader v-if="isLoading" />
+
+		<p v-else-if="searchResult && searchResult.length" class="text-center font-hairline my-8">
+			<span>{{ searchResult.length }}</span>
+		</p>
+
+		<p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
 	</div>
 </template>
 
@@ -20,7 +20,7 @@ import SearchBar from "./components/SearchBar.vue";
 import Loader from "./components/Loader.vue";
 
 export default {
-	computed: mapGetters(["allComicses", "areFetching"]),
+	computed: mapGetters(["searchResult", "isLoading"]),
 	components: {
 		SearchBar,
 		Loader
