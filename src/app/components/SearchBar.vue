@@ -1,49 +1,49 @@
 <template>
-	<form action="#" class="search-bar flex items-center justify-center" @submit.prevent="search">
-		<input
-			v-model="title"
-			class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
-			type="text"
-			placeholder="Title"
-		/>
-		<button
-			class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
-			type="submit"
-		>Find</button>
-	</form>
+  <form action="#" class="search-bar flex items-center justify-center" @submit.prevent="search">
+    <input
+      v-model="title"
+      class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
+      type="text"
+      placeholder="Title"
+    />
+    <button
+      class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
+      type="submit"
+    >Find</button>
+  </form>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 
 export default {
-	data() {
-		return {
-			title: ""
-		};
-	},
-	methods: {
-		...mapActions(["searchComics"]),
-		search() {
-			this.searchComics(this.title);
-		}
-	}
+  data() {
+    return {
+      title: ""
+    };
+  },
+  methods: {
+    ...mapActions(["searchComics"]),
+    search() {
+      this.searchComics(this.title);
+    }
+  }
 };
 </script>
 
 <style lang="scss" computed>
 input,
 button {
-	box-shadow: 0 0 5px #cecece62;
-	transition: 0.2s;
+  box-shadow: 0 0 5px #cecece62;
+  transition: 0.2s;
 }
 input {
-	width: 250px;
+  width: 250px;
 }
 button {
-	width: 150px;
-	&:hover {
-		box-shadow: 0 0 10px #cecece62;
-	}
+  width: 150px;
+  &:hover {
+    box-shadow: 0 0 10px #cecece62;
+  }
 }
 </style>

@@ -1,9 +1,9 @@
-import Vue from "vue";
-import "./app/scss/tailwind.scss";
-import App from "./app/App.vue";
-import store from "./app/store";
+import Vue from 'vue';
+import './app/scss/tailwind.scss';
+import App from './app/App.vue';
+import store from './app/store';
 
 new Vue({
-	store,
-	render: h => h(App)
-}).$mount("#app");
+  store,
+  render: h => h(App)
+}).$mount('#app');
