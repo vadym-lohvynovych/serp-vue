@@ -1,11 +1,20 @@
 <template>
-  <form action="#" class="search-bar flex items-center justify-center" @submit.prevent="search">
-    <input
-      v-model="title"
-      class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
-      type="text"
-      placeholder="Title"
-    />
+  <form
+    action="#"
+    class="search-bar flex items-center justify-center px-4"
+    @submit.prevent="search"
+  >
+    <div class="input-title-wrapper relative">
+      <input
+        v-model="title"
+        class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
+        :class="{'border-red-700': this.error}"
+        @focus="removeError"
+        type="text"
+        placeholder="Title"
+      />
+      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
+    </div>
     <button
       class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
       type="submit"
@@ -19,13 +28,42 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      title: "hulk"
+      title: "",
+      error: "",
     };
   },
+
+  computed: {
+    urlTitle() {
+      return this.$route.query.title;
+    }
+  },
+
   methods: {
-    ...mapActions(["findComics"]),
+    ...mapActions(["fetchComics"]),
     search() {
-      this.findComics(this.title);
+      if (this.title.length > 3) {
+        this.error = "";
+        this.$router.push(`?title=${this.title}`);
+        this.fetchComics(this.title);
+      } else {
+        this.error = "Title should be longer than 3 characters";
+      }
+    },
+    removeError() {
+      this.error = "";
+    }
+  },
+
+  watch: {
+    // title(value) {
+    //   if(value.length >= 3 && this.error) this.error = "";
+    // }
+  },
+
+  mounted() {
+    if (this.urlTitle) {
+      this.title = this.urlTitle;
     }
   }
 };
@@ -39,6 +77,23 @@ button {
 }
 input {
   width: 250px;
+}
+.input-error {
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: .6em;
+  &:after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom: 5px solid #fc8181;
+  }
 }
 button {
   width: 150px;
