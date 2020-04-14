@@ -23,9 +23,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["searchComics"]),
+    ...mapActions(["findComics"]),
     search() {
-      this.searchComics(this.title);
+      this.findComics(this.title);
     }
   }
 };

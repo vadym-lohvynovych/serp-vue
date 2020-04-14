@@ -1,11 +1,10 @@
-import api from '../../api';
+import { searchComics } from '../utils/api'
 
 export default {
   actions: {
-    searchComics(context, title) {
+    findComics(context, title) {
       context.commit('setFetching', true);
-      api
-        .searchComics(title)
+      searchComics(title)
         .then(res => {
           context.commit('updateComics', res.data);
         })
