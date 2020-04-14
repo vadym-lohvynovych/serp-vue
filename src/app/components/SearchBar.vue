@@ -19,7 +19,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      title: ""
+      title: "hulk"
     };
   },
   methods: {
