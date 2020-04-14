@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <h1 class="text-center text-xl my-5 font-hairline">Here you can find some comics info!</h1>
+    <h1 class="text-center text-xl my-5 font-hairline">Here you can find some comics!</h1>
 
     <SearchBar />
 

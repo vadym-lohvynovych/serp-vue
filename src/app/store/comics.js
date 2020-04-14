@@ -14,6 +14,9 @@ export default {
         .finally(() => {
           context.commit('setFetching', false);
         });
+    },
+    makeItemVisible(context, index, interval = 80) {
+      context.commit('makeItemVisible', { index, interval });
     }
   },
   mutations: {
@@ -23,9 +26,14 @@ export default {
     updateComics(state, comics) {
       const { results, ...rest } = comics;
       state.comics = {
-        items: results,
+        items: results.map(({ id, title, thumbnail }, index) => ({ id, title, thumbnail, index, visibility: 'hidden' })),
         ...rest
       };
+    },
+    makeItemVisible(state, { index, interval }) {
+      setTimeout(() => {
+        state.comics.items[index].visibility = 'visible';
+      }, interval * index + 1);
     },
     setError(state, error) {
       state.error = error;
