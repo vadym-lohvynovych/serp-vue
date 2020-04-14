@@ -43,8 +43,8 @@ export default {
     ...mapActions(["fetchComics"]),
     search() {
       if (this.title.length > 2) {
-        this.error = "";
-        this.$router.push(``);
+        this.error = "";        
+        this.$router.push(`?title=${this.title}`);
         this.fetchComics(this.title);
       } else {
         this.error = "Title should be at least 3 characters long";
