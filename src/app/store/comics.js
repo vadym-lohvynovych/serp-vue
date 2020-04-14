@@ -1,4 +1,4 @@
-import { searchComics } from '../utils/api'
+import { searchComics } from '../../utils/api'
 
 export default {
   actions: {
