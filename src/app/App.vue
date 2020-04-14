@@ -6,7 +6,9 @@
 			<Loader />
 		</div>
 		<div v-else-if="allComicses && allComicses.length">
-			<p class="text-center font-hairline my-8">{{ allComicses.length }}</p>
+			<div class="comics-items flex flex-wrap py-8">
+				<ComicsItem v-for="comics in allComicses" :key="comics.id" :item="comics"/>
+			</div>
 		</div>
 		<div v-else-if="allComicses">
 			<p class="text-center font-hairline my-8">Cant find :(</p>
@@ -18,12 +20,14 @@
 import { mapGetters } from "vuex";
 import SearchBar from "./components/SearchBar.vue";
 import Loader from "./components/Loader.vue";
+import ComicsItem from './components/ComicsItem.vue'
 
 export default {
 	computed: mapGetters(["allComicses", "areFetching"]),
 	components: {
 		SearchBar,
-		Loader
+		Loader,
+		ComicsItem
 	}
 };
 </script>

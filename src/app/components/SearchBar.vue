@@ -7,7 +7,7 @@
 			placeholder="Title"
 		/>
 		<button
-			class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
+			class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 hover:bg-red-500 hover:text-gray-200 font-semibold"
 			type="submit"
 		>Find</button>
 	</form>
@@ -19,7 +19,7 @@ import { mapActions } from "vuex";
 export default {
 	data() {
 		return {
-			title: ""
+			title: "hulk"
 		};
 	},
 	methods: {

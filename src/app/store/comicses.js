@@ -6,10 +6,8 @@ export default {
 			context.commit("setFetching", true);
 			api.searchComicses(title)
 				.then(res => {
-					setTimeout(() => {
-						context.commit("updateComicses", res.data);
-						context.commit("setFetching", false);
-					}, 1000);
+					context.commit("updateComicses", res.data);
+					context.commit("setFetching", false);
 				})
 				.catch(error => {
 					context.commit("setError", error);
