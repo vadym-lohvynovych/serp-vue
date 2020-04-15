@@ -6,7 +6,10 @@
 
     <Loader v-if="isLoading" />
 
-    <div v-else-if="searchResult && searchResult.length" class="search-result-items flex flex-wrap py-8">
+    <div
+      v-else-if="searchResult && searchResult.length"
+      class="search-result-items flex flex-wrap py-8"
+    >
       <SearchResultItem v-for="searchItem in searchResult" :key="searchItem.id" :item="searchItem" />
     </div>
 
@@ -27,18 +30,68 @@ export default {
       return this.$route.query.title;
     }
   },
-  components: {
-    SearchBar,
-    Loader,
-    SearchResultItem
+
+  methods: {
+    ...mapActions(["fetchComics", "fetchRandomCharacters"]),
+
+    lazyLoad() {
+      let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+      let active = false;
+      if (active === false) {
+        active = true;
+        setTimeout(() => {
+          lazyImages.forEach((lazyImage, index) => {
+            if (
+              lazyImage.getBoundingClientRect().top <= window.innerHeight &&
+              lazyImage.getBoundingClientRect().bottom >= 0 &&
+              getComputedStyle(lazyImage).display !== "none"
+            ) {
+              lazyImage.src = lazyImage.dataset.src;
+              setTimeout(() => {
+                lazyImage.classList.remove("lazy");
+              }, 500);
+              lazyImages = lazyImages.filter(image => image !== lazyImage);
+
+              if (lazyImages.length === 0) {
+                try {
+                  window.removeEventListener("scroll", this.lazyLoad);
+                } catch (e) {
+                  console.log("lazy errors");
+                }
+              }
+            }
+          });
+          active = false;
+        }, 200);
+      }
+    }
   },
-  methods: mapActions(["fetchComics", "fetchRandomCharacters"]),
+
+  watch: {
+    searchResult(value) {
+      if (value.length) {
+        setTimeout(() => {
+          this.lazyLoad();
+        }, 0);
+      }
+    }
+  },
+
   mounted() {
     if (this.title) {
       this.fetchComics(this.title);
     } else {
       this.fetchRandomCharacters();
     }
+
+    this.lazyLoad();
+    window.addEventListener("scroll", this.lazyLoad);
+  },
+
+  components: {
+    SearchBar,
+    Loader,
+    SearchResultItem
   }
 };
 </script>

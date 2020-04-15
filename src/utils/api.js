@@ -19,8 +19,6 @@ async function getCharacters(offset = 0) {
 
 async function getRandomCharacters() {
   const offset = Math.floor(Math.random() * 1200);
-  console.log(offset);
-
   return await getResource(`${_defaultPath}characters?offset=${offset}&orderBy=modified&apikey=${_key}`);
 }
 

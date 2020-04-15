@@ -5,10 +5,10 @@ export default {
     fetchComics(context, title) {
       context.commit('setFetching', true);
       findComics(title)
-        .then(res => {
-          context.commit('updateItems', {items: res.data, statePropName: 'comics'});
+        .then((res) => {
+          context.commit('updateItems', { items: res.data, statePropName: 'comics' });
         })
-        .catch(error => {
+        .catch((error) => {
           context.commit('setError', error);
         })
         .finally(() => {
@@ -19,10 +19,10 @@ export default {
     fetchRandomCharacters(context) {
       context.commit('setFetching', true);
       getRandomCharacters()
-        .then(res => {
-          context.commit('updateItems', {items: res.data, statePropName: 'characters'});
+        .then((res) => {
+          context.commit('updateItems', { items: res.data, statePropName: 'characters' });
         })
-        .catch(error => {
+        .catch((error) => {
           context.commit('setError', error);
         })
         .finally(() => {
@@ -32,19 +32,19 @@ export default {
 
     makeItemVisible(context, index, interval = 80) {
       context.commit('makeItemVisible', { index, interval });
-    }
+    },
   },
   mutations: {
     setFetching(state, value) {
       state.fetching = value;
     },
 
-    updateItems(state, { items }) {      
+    updateItems(state, { items }) {
       const { results, ...rest } = items;
 
       state.searchResult = {
         items: results.map(({ id, title, name, thumbnail }, index) => ({ id, title: title ? title : name, thumbnail, index, visibility: 'hidden' })),
-        ...rest
+        ...rest,
       };
     },
 
@@ -56,12 +56,12 @@ export default {
 
     setError(state, error) {
       state.error = error;
-    }
+    },
   },
   state: {
     searchResult: null,
     fetching: false,
-    error: false
+    error: false,
   },
   getters: {
     searchResult(state) {
@@ -69,6 +69,6 @@ export default {
     },
     isLoading(state) {
       return state.fetching;
-    }
-  }
+    },
+  },
 };

@@ -8,9 +8,9 @@
       <input
         v-model="title"
         class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
-        :class="{'border-red-700': this.error}"
-        @focus="removeError"
         type="text"
+        @blur="removeError"
+        @focus="removeError"
         placeholder="Title"
       />
       <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       title: "",
-      error: "",
+      error: ""
     };
   },
 
@@ -42,23 +42,16 @@ export default {
   methods: {
     ...mapActions(["fetchComics"]),
     search() {
-      if (this.title.length > 3) {
-        this.error = "";
+      if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
         this.fetchComics(this.title);
-      } else {
-        this.error = "Title should be longer than 3 characters";
+      } else if (this.title.length < 3) {
+        this.error = "Title should be at least 3 characters long";
       }
     },
     removeError() {
       this.error = "";
     }
-  },
-
-  watch: {
-    // title(value) {
-    //   if(value.length >= 3 && this.error) this.error = "";
-    // }
   },
 
   mounted() {
@@ -83,7 +76,7 @@ input {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: .6em;
+  font-size: 0.6em;
   &:after {
     display: block;
     content: "";
