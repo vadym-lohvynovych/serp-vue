@@ -24,7 +24,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import placeholder from "../images/placeholder.jpg";
+import placeholder from "../images/placeholder.png";
 
 export default {
   props: {
