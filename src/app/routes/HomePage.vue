@@ -24,6 +24,11 @@ import Loader from "../components/Loader.vue";
 import SearchResultItem from "../components/SearchResultItem.vue";
 
 export default {
+  data() {
+    return {
+      isLazyEventListenerActive: false
+    };
+  },
   computed: {
     ...mapGetters(["searchResult", "isLoading"]),
     title() {
@@ -42,19 +47,21 @@ export default {
         setTimeout(() => {
           lazyImages.forEach((lazyImage, index) => {
             if (
-              lazyImage.getBoundingClientRect().top <= window.innerHeight &&
+              lazyImage.getBoundingClientRect().top - 200 <=
+                window.innerHeight &&
               lazyImage.getBoundingClientRect().bottom >= 0 &&
               getComputedStyle(lazyImage).display !== "none"
             ) {
               lazyImage.src = lazyImage.dataset.src;
-              setTimeout(() => {
-                lazyImage.classList.remove("lazy");
-              }, 500);
+              lazyImage.classList.remove("lazy");
               lazyImages = lazyImages.filter(image => image !== lazyImage);
 
               if (lazyImages.length === 0) {
                 try {
-                  window.removeEventListener("scroll", this.lazyLoad);
+                  if (this.isLazyEventListenerActive) {
+                    window.removeEventListener("scroll", this.lazyLoad);
+                    this.isLazyEventListenerActive = false;
+                  }
                 } catch (e) {
                   console.log("lazy errors");
                 }
@@ -70,6 +77,10 @@ export default {
   watch: {
     searchResult(value) {
       if (value.length) {
+        if (!this.isLazyEventListenerActive) {
+          window.addEventListener("scroll", this.lazyLoad);
+        }
+
         setTimeout(() => {
           this.lazyLoad();
         }, 0);
@@ -85,6 +96,8 @@ export default {
     }
 
     this.lazyLoad();
+    this.isLazyEventListenerActive = true;
+    window.scrollTo(0, 0);
     window.addEventListener("scroll", this.lazyLoad);
   },
 

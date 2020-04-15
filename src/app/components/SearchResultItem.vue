@@ -69,7 +69,7 @@ export default {
 .title,
 .hover-bg,
 img {
-  transition: transform 0.2s ease-in-out, filter 0.6s ease-in;
+  transition: transform 0.2s ease-in-out, filter 0.3s ease-in;
   &.lazy {
     filter: blur(5px);
   }
