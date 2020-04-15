@@ -40,17 +40,17 @@ export default {
       if (active === false) {
         active = true;
         setTimeout(() => {
-          lazyImages.forEach(function(lazyImage) {
+          lazyImages.forEach((lazyImage, index) => {
             if (
               lazyImage.getBoundingClientRect().top <= window.innerHeight &&
               lazyImage.getBoundingClientRect().bottom >= 0 &&
               getComputedStyle(lazyImage).display !== "none"
             ) {
               lazyImage.src = lazyImage.dataset.src;
-              lazyImage.classList.remove("lazy");
-              lazyImages = lazyImages.filter(function(image) {
-                return image !== lazyImage;
-              });
+              setTimeout(() => {
+                lazyImage.classList.remove("lazy");
+              }, 500);
+              lazyImages = lazyImages.filter(image => image !== lazyImage);
 
               if (lazyImages.length === 0) {
                 try {
