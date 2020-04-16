@@ -44,8 +44,7 @@ export default {
     ...mapActions(["fetchItems", "setNameOfItemsToSearch", "watchSomeInfo"]),
 
     search() {
-      this.setNameOfItemsToSearch("Comics");
-      this.watchSomeInfo();
+      this.setNameOfItemsToSearch("comics");
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
         this.fetchItems({ title: this.title });
@@ -60,7 +59,7 @@ export default {
 
   mounted() {
     if (this.urlTitle) {
-      this.setNameOfItemsToSearch("Comics");
+      this.setNameOfItemsToSearch("comics");
       this.title = this.urlTitle;
     }
     this.fetchItems({ title: this.urlTitle });

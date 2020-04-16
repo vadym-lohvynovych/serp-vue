@@ -1,11 +1,12 @@
 import * as api from '../../utils/api';
+import apiStructure from '../../utils/apiStructure'
 
 export default {
   actions: {
     fetchItems({ commit, state }, { title, offset }) {
-      commit('setFetching', true);
+      commit('setFetching', true);      
 
-      const method = api[`get${state.nameOfItemsToSearch}`];
+      const method = api[apiStructure[state.nameOfItemsToSearch]];
 
       method(title, offset)
         .then((res) => {
@@ -17,10 +18,6 @@ export default {
         .finally(() => {
           commit('setFetching', false);
         });
-    },
-
-    watchSomeInfo(context) {
-      console.log('ctx', context);
     },
 
     setNameOfItemsToSearch({ commit }, name) {
@@ -65,7 +62,7 @@ export default {
     searchResult: null,
     fetching: false,
     error: false,
-    nameOfItemsToSearch: 'RandomCharacters',
+    nameOfItemsToSearch: 'random',
   },
 
   getters: {
