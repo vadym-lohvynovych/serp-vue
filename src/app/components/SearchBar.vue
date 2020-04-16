@@ -41,7 +41,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["fetchItems", "setNameOfItemsToSearch", "watchSomeInfo"]),
+    ...mapActions(["fetchItems", "setNameOfItemsToSearch"]),
 
     search() {
       this.setNameOfItemsToSearch("comics");
