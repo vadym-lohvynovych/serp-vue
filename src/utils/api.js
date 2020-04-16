@@ -22,12 +22,8 @@ async function getRandomCharacters() {
   return await getResource(`${_defaultPath}characters?offset=${offset}&orderBy=modified&apikey=${_key}`);
 }
 
-async function getComics(offset = 0) {
-  return await getResource(`${_defaultPath}comics?offset=${offset}?apikey=${_key}`);
+async function getComics(title, offset = 0) {
+  return await getResource(`${_defaultPath}comics?offset=${offset}${title ? `&title=${title}` : ''}&apikey=${_key}`);
 }
 
-async function findComics(title) {
-  return await getResource(`${_defaultPath}comics?title=${title}&apikey=${_key}`);
-}
-
-export { getCharacters, getComics, findComics, getRandomCharacters };
+export { getCharacters, getComics, getRandomCharacters };

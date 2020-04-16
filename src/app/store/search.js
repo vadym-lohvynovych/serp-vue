@@ -1,51 +1,53 @@
-import { findComics, getRandomCharacters } from '../../utils/api';
+import * as api from '../../utils/api';
 
 export default {
   actions: {
-    fetchComics(context, title) {
-      context.commit('setFetching', true);
-      findComics(title)
+    fetchItems({ commit, state }, { title, offset }) {
+      commit('setFetching', true);
+
+      const method = api[`get${state.nameOfItemsToSearch}`];
+
+      method(title, offset)
         .then((res) => {
-          context.commit('updateItems', { items: res.data, statePropName: 'comics' });
+          commit('updateItems', res.data);
         })
         .catch((error) => {
-          context.commit('setError', error);
+          commit('setError', error);
         })
         .finally(() => {
-          context.commit('setFetching', false);
+          commit('setFetching', false);
         });
     },
 
-    fetchRandomCharacters(context) {
-      context.commit('setFetching', true);
-      getRandomCharacters()
-        .then((res) => {
-          context.commit('updateItems', { items: res.data, statePropName: 'characters' });
-        })
-        .catch((error) => {
-          context.commit('setError', error);
-        })
-        .finally(() => {
-          context.commit('setFetching', false);
-        });
+    watchSomeInfo(context) {
+      console.log('ctx', context);
+    },
+
+    setNameOfItemsToSearch({ commit }, name) {
+      commit('setNameOfItemsToSearch', name);
     },
 
     makeItemVisible(context, index, interval = 80) {
       context.commit('makeItemVisible', { index, interval });
     },
   },
+
   mutations: {
     setFetching(state, value) {
       state.fetching = value;
     },
 
-    updateItems(state, { items }) {
+    updateItems(state, items) {
       const { results, ...rest } = items;
 
       state.searchResult = {
         items: results.map(({ id, title, name, thumbnail }, index) => ({ id, title: title ? title : name, thumbnail, index, visibility: 'hidden' })),
         ...rest,
       };
+    },
+
+    setNameOfItemsToSearch(state, name) {
+      state.nameOfItemsToSearch = name;
     },
 
     makeItemVisible(state, { index, interval }) {
@@ -58,17 +60,26 @@ export default {
       state.error = error;
     },
   },
+
   state: {
     searchResult: null,
     fetching: false,
     error: false,
+    nameOfItemsToSearch: 'RandomCharacters',
   },
+
   getters: {
     searchResult(state) {
       return state.searchResult && state.searchResult.items;
     },
     isLoading(state) {
       return state.fetching;
+    },
+    error(state) {
+      return state.error;
+    },
+    nameOfItemsToSearch(state) {
+      return state.nameOfItemsToSearch;
     },
   },
 };

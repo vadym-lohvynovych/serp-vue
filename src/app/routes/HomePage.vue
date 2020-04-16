@@ -37,8 +37,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(["fetchComics", "fetchRandomCharacters"]),
-
     lazyLoad() {
       let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
       let active = false;
@@ -57,13 +55,8 @@ export default {
               lazyImages = lazyImages.filter(image => image !== lazyImage);
 
               if (lazyImages.length === 0) {
-                try {
-                  if (this.isLazyEventListenerActive) {
-                    window.removeEventListener("scroll", this.lazyLoad);
-                    this.isLazyEventListenerActive = false;
-                  }
-                } catch (e) {
-                  console.log("lazy errors");
+                if (this.isLazyEventListenerActive) {
+                  this.removeLazyEventListener();
                 }
               }
             }
@@ -71,6 +64,16 @@ export default {
           active = false;
         }, 200);
       }
+    },
+
+    addLazyEventListener() {
+      window.addEventListener("scroll", this.lazyLoad);
+      this.isLazyEventListenerActive = true;
+    },
+
+    removeLazyEventListener() {
+      window.removeEventListener("scroll", this.lazyLoad);
+      this.isLazyEventListenerActive = false;
     }
   },
 
@@ -78,7 +81,7 @@ export default {
     searchResult(value) {
       if (value.length) {
         if (!this.isLazyEventListenerActive) {
-          window.addEventListener("scroll", this.lazyLoad);
+          this.addLazyEventListener();
         }
 
         setTimeout(() => {
@@ -89,16 +92,9 @@ export default {
   },
 
   mounted() {
-    if (this.title) {
-      this.fetchComics(this.title);
-    } else {
-      this.fetchRandomCharacters();
-    }
-
     this.lazyLoad();
-    this.isLazyEventListenerActive = true;
     window.scrollTo(0, 0);
-    window.addEventListener("scroll", this.lazyLoad);
+    this.addLazyEventListener();
   },
 
   components: {

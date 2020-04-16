@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -34,17 +34,21 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["nameOfItemsToSearch"]),
     urlTitle() {
       return this.$route.query.title;
     }
   },
 
   methods: {
-    ...mapActions(["fetchComics"]),
+    ...mapActions(["fetchItems", "setNameOfItemsToSearch", "watchSomeInfo"]),
+
     search() {
+      this.setNameOfItemsToSearch("Comics");
+      this.watchSomeInfo();
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
-        this.fetchComics(this.title);
+        this.fetchItems({ title: this.title });
       } else if (this.title.length < 3) {
         this.error = "Title should be at least 3 characters long";
       }
@@ -56,8 +60,10 @@ export default {
 
   mounted() {
     if (this.urlTitle) {
+      this.setNameOfItemsToSearch("Comics");
       this.title = this.urlTitle;
     }
+    this.fetchItems({ title: this.urlTitle });
   }
 };
 </script>
