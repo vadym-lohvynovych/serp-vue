@@ -3,7 +3,8 @@
     <router-link
       to="/"
       class="inline-block hover:text-indigo-500 text-md py-5 text-left ml-3"
-    >SerpApp.</router-link>
+      >SerpApp.</router-link
+    >
     <router-view />
   </div>
 </template>
