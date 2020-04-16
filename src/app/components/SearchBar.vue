@@ -13,23 +13,27 @@
         @focus="removeError"
         placeholder="Title"
       />
-      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
+      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">
+        {{ error }}
+      </p>
     </div>
     <button
       class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
       type="submit"
-    >Find</button>
+    >
+      Find
+    </button>
   </form>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
   data() {
     return {
-      title: "",
-      error: ""
+      title: '',
+      error: ''
     };
   },
 
@@ -40,17 +44,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(["fetchComics"]),
+    ...mapActions(['fetchComics']),
     search() {
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
         this.fetchComics(this.title);
       } else if (this.title.length < 3) {
-        this.error = "Title should be at least 3 characters long";
+        this.error = 'Title should be at least 3 characters long';
       }
     },
     removeError() {
-      this.error = "";
+      this.error = '';
     }
   },
 
@@ -79,7 +83,7 @@ input {
   font-size: 0.6em;
   &:after {
     display: block;
-    content: "";
+    content: '';
     position: absolute;
     top: -10px;
     left: 50%;
