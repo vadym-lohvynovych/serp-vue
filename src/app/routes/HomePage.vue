@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import SearchBar from "../components/SearchBar.vue";
-import Loader from "../components/Loader.vue";
-import SearchResultItem from "../components/SearchResultItem.vue";
+import { mapGetters, mapActions } from 'vuex';
+import SearchBar from '../components/SearchBar.vue';
+import Loader from '../components/Loader.vue';
+import SearchResultItem from '../components/SearchResultItem.vue';
 
 export default {
   data() {
@@ -30,7 +30,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["searchResult", "isLoading"]),
+    ...mapGetters(['searchResult', 'isLoading']),
     title() {
       return this.$route.query.title;
     }
@@ -38,20 +38,20 @@ export default {
 
   methods: {
     lazyLoad() {
-      let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+      let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
       let active = false;
       if (active === false) {
         active = true;
         setTimeout(() => {
-          lazyImages.forEach((lazyImage, index) => {
+          lazyImages.forEach(lazyImage => {
             if (
               lazyImage.getBoundingClientRect().top - 200 <=
                 window.innerHeight &&
               lazyImage.getBoundingClientRect().bottom >= 0 &&
-              getComputedStyle(lazyImage).display !== "none"
+              getComputedStyle(lazyImage).display !== 'none'
             ) {
               lazyImage.src = lazyImage.dataset.src;
-              lazyImage.classList.remove("lazy");
+              lazyImage.classList.remove('lazy');
               lazyImages = lazyImages.filter(image => image !== lazyImage);
 
               if (lazyImages.length === 0) {
@@ -67,12 +67,12 @@ export default {
     },
 
     addLazyEventListener() {
-      window.addEventListener("scroll", this.lazyLoad);
+      window.addEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = true;
     },
 
     removeLazyEventListener() {
-      window.removeEventListener("scroll", this.lazyLoad);
+      window.removeEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = false;
     }
   },
@@ -104,7 +104,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 body {

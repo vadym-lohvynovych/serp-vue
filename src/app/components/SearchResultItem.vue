@@ -2,13 +2,13 @@
   <div class="w-1/2 sm:w-1/3 md:w-1/4 px-4 py-5">
     <div
       class="search-result-item relative rounded"
-      :class="{'opacity-0': item.visibility === 'hidden'}"
+      :class="{ 'opacity-0': item.visibility === 'hidden' }"
     >
       <div class="object-cover object-center">
         <img
           class="img mx-auto cursor-pointer w-full lazy"
           :src="placeholder"
-          :data-src="path"
+          :data-src="itemImagePath"
           alt="search-image"
         />
       </div>
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import placeholder from "../images/placeholder.png";
+import { mapActions } from 'vuex';
+import placeholder from '../images/placeholder.png';
 
 export default {
   props: {
@@ -38,12 +38,12 @@ export default {
   },
 
   computed: {
-    path() {
+    itemImagePath() {
       return `${this.item.thumbnail.path}/portrait_uncanny.${this.item.thumbnail.extension}`;
     }
   },
 
-  methods: mapActions(["makeItemVisible"]),
+  methods: mapActions(['makeItemVisible']),
 
   mounted() {
     this.makeItemVisible(this.item.index);

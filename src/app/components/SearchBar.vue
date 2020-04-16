@@ -23,43 +23,43 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
-      title: "",
-      error: ""
+      title: '',
+      error: ''
     };
   },
 
   computed: {
-    ...mapGetters(["nameOfItemsToSearch"]),
+    ...mapGetters(['nameOfItemsToSearch']),
     urlTitle() {
       return this.$route.query.title;
     }
   },
 
   methods: {
-    ...mapActions(["fetchItems", "setNameOfItemsToSearch"]),
+    ...mapActions(['fetchItems', 'setNameOfItemsToSearch']),
 
     search() {
-      this.setNameOfItemsToSearch("comics");
+      this.setNameOfItemsToSearch('comics');
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
         this.fetchItems({ title: this.title });
       } else if (this.title.length < 3) {
-        this.error = "Title should be at least 3 characters long";
+        this.error = 'Title should be at least 3 characters long';
       }
     },
     removeError() {
-      this.error = "";
+      this.error = '';
     }
   },
 
   mounted() {
     if (this.urlTitle) {
-      this.setNameOfItemsToSearch("comics");
+      this.setNameOfItemsToSearch('comics');
       this.title = this.urlTitle;
     }
     this.fetchItems({ title: this.urlTitle });
@@ -84,7 +84,7 @@ input {
   font-size: 0.6em;
   &:after {
     display: block;
-    content: "";
+    content: '';
     position: absolute;
     top: -10px;
     left: 50%;

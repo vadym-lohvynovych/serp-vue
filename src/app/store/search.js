@@ -1,18 +1,18 @@
 import * as api from '../../utils/api';
-import apiStructure from '../../utils/apiStructure'
+import apiStructure from '../../utils/apiStructure';
 
 export default {
   actions: {
     fetchItems({ commit, state }, { title, offset }) {
-      commit('setFetching', true);      
+      commit('setFetching', true);
 
       const method = api[apiStructure[state.nameOfItemsToSearch]];
 
       method(title, offset)
-        .then((res) => {
+        .then(res => {
           commit('updateItems', res.data);
         })
-        .catch((error) => {
+        .catch(error => {
           commit('setError', error);
         })
         .finally(() => {
@@ -26,7 +26,7 @@ export default {
 
     makeItemVisible(context, index, interval = 80) {
       context.commit('makeItemVisible', { index, interval });
-    },
+    }
   },
 
   mutations: {
@@ -38,8 +38,14 @@ export default {
       const { results, ...rest } = items;
 
       state.searchResult = {
-        items: results.map(({ id, title, name, thumbnail }, index) => ({ id, title: title ? title : name, thumbnail, index, visibility: 'hidden' })),
-        ...rest,
+        items: results.map(({ id, title, name, thumbnail }, index) => ({
+          id,
+          title: title ? title : name,
+          thumbnail,
+          index,
+          visibility: 'hidden'
+        })),
+        ...rest
       };
     },
 
@@ -55,14 +61,14 @@ export default {
 
     setError(state, error) {
       state.error = error;
-    },
+    }
   },
 
   state: {
     searchResult: null,
     fetching: false,
     error: false,
-    nameOfItemsToSearch: 'random',
+    nameOfItemsToSearch: 'random'
   },
 
   getters: {
@@ -77,6 +83,6 @@ export default {
     },
     nameOfItemsToSearch(state) {
       return state.nameOfItemsToSearch;
-    },
-  },
+    }
+  }
 };

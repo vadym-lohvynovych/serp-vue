@@ -14,16 +14,24 @@ async function getResource(url) {
 }
 
 async function getCharacters(offset = 0) {
-  return await getResource(`${_defaultPath}characters?offset=${offset}&apikey=${_key}`);
+  return await getResource(
+    `${_defaultPath}characters?offset=${offset}&apikey=${_key}`
+  );
 }
 
 async function getRandomCharacters() {
   const offset = Math.floor(Math.random() * 1200);
-  return await getResource(`${_defaultPath}characters?offset=${offset}&orderBy=modified&apikey=${_key}`);
+  return await getResource(
+    `${_defaultPath}characters?offset=${offset}&orderBy=modified&apikey=${_key}`
+  );
 }
 
 async function getComics(title, offset = 0) {
-  return await getResource(`${_defaultPath}comics?offset=${offset}${title ? `&title=${title}` : ''}&apikey=${_key}`);
+  const pathTitle = title ? `&title=${title}` : '';
+
+  return await getResource(
+    `${_defaultPath}comics?offset=${offset}${pathTitle}&apikey=${_key}`
+  );
 }
 
 export { getCharacters, getComics, getRandomCharacters };
