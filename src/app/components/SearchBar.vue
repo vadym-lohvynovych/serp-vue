@@ -13,21 +13,17 @@
         @focus="removeError"
         placeholder="Title"
       />
-      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">
-        {{ error }}
-      </p>
+      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
     </div>
     <button
       class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
       type="submit"
-    >
-      Find
-    </button>
+    >Find</button>
   </form>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -38,17 +34,20 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['nameOfItemsToSearch']),
     urlTitle() {
       return this.$route.query.title;
     }
   },
 
   methods: {
-    ...mapActions(['fetchComics']),
+    ...mapActions(['fetchItems', 'setNameOfItemsToSearch']),
+
     search() {
+      this.setNameOfItemsToSearch('comics');
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
-        this.fetchComics(this.title);
+        this.fetchItems({ title: this.title });
       } else if (this.title.length < 3) {
         this.error = 'Title should be at least 3 characters long';
       }
@@ -60,8 +59,10 @@ export default {
 
   mounted() {
     if (this.urlTitle) {
+      this.setNameOfItemsToSearch('comics');
       this.title = this.urlTitle;
     }
+    this.fetchItems({ title: this.urlTitle });
   }
 };
 </script>

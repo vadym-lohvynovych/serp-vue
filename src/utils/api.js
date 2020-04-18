@@ -26,16 +26,12 @@ async function getRandomCharacters() {
   );
 }
 
-async function getComics(offset = 0) {
+async function getComics(title, offset = 0) {
+  const pathTitle = title ? `&title=${title}` : '';
+
   return await getResource(
-    `${_defaultPath}comics?offset=${offset}?apikey=${_key}`
+    `${_defaultPath}comics?offset=${offset}${pathTitle}&apikey=${_key}`
   );
 }
 
-async function findComics(title) {
-  return await getResource(
-    `${_defaultPath}comics?title=${title}&apikey=${_key}`
-  );
-}
-
-export { getCharacters, getComics, findComics, getRandomCharacters };
+export { getCharacters, getComics, getRandomCharacters };
