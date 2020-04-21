@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
@@ -30,7 +30,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['searchResult', 'isLoading']),
+    ...mapState({
+      searchResult: state => {
+        return state.search.searchResult && state.search.searchResult.items
+      },
+      isLoading: state => state.search.isLoading
+    }),
     title() {
       return this.$route.query.title;
     }
@@ -78,7 +83,7 @@ export default {
   },
 
   watch: {
-    searchResult(value) {
+    searchResult(value) {      
       if (value.length) {
         if (!this.isLazyEventListenerActive) {
           this.addLazyEventListener();
@@ -88,10 +93,10 @@ export default {
           this.lazyLoad();
         }, 0);
       }
-    }
+    },
   },
 
-  mounted() {
+  mounted() {        
     this.lazyLoad();
     window.scrollTo(0, 0);
     this.addLazyEventListener();
