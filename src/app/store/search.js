@@ -3,7 +3,7 @@ import apiStructure from '../../utils/apiStructure';
 
 export default {
   namespaced: true,
-  
+
   actions: {
     fetchItems({ commit, state }, { title, offset }) {
       commit('setFetching', true);

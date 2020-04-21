@@ -10,7 +10,11 @@
       v-else-if="searchResult && searchResult.items && searchResult.items.length"
       class="search-result-items flex flex-wrap py-8"
     >
-      <SearchResultItem v-for="searchItem in searchResult.items" :key="searchItem.id" :item="searchItem" />
+      <SearchResultItem
+        v-for="searchItem in searchResult.items"
+        :key="searchItem.id"
+        :item="searchItem"
+      />
     </div>
 
     <p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
@@ -33,7 +37,7 @@ export default {
     ...mapState('search', ['searchResult', 'isLoading']),
     title() {
       return this.$route.query.title;
-    },
+    }
   },
 
   methods: {
@@ -78,7 +82,7 @@ export default {
   },
 
   watch: {
-    searchResult(value) {      
+    searchResult(value) {
       if (value.items.length) {
         if (!this.isLazyEventListenerActive) {
           this.addLazyEventListener();
@@ -88,10 +92,10 @@ export default {
           this.lazyLoad();
         }, 0);
       }
-    },
+    }
   },
 
-  mounted() {        
+  mounted() {
     this.lazyLoad();
     window.scrollTo(0, 0);
     this.addLazyEventListener();

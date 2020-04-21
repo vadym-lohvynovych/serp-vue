@@ -56,7 +56,7 @@ export default {
     }
   },
 
-  mounted() {    
+  mounted() {
     if (this.urlTitle) {
       this.setSearchType('comics');
       this.title = this.urlTitle;
