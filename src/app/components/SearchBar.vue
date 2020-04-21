@@ -40,7 +40,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchItems', 'setSearchType']),
+    ...mapActions('search', ['fetchItems', 'setSearchType']),
 
     search() {
       this.setSearchType('comics');

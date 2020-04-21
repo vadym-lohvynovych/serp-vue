@@ -43,7 +43,7 @@ export default {
     }
   },
 
-  methods: mapActions(['makeItemVisible']),
+  methods: mapActions('search', ['makeItemVisible']),
 
   mounted() {
     this.makeItemVisible(this.item.index);
