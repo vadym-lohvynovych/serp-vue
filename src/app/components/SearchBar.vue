@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -34,17 +34,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['nameOfItemsToSearch']),
     urlTitle() {
       return this.$route.query.title;
     }
   },
 
   methods: {
-    ...mapActions(['fetchItems', 'setNameOfItemsToSearch']),
+    ...mapActions('search', ['fetchItems', 'setSearchType']),
 
     search() {
-      this.setNameOfItemsToSearch('comics');
+      this.setSearchType('comics');
       if (this.title.length > 2 && this.title !== this.urlTitle) {
         this.$router.push(`?title=${this.title}`);
         this.fetchItems({ title: this.title });
@@ -59,7 +58,7 @@ export default {
 
   mounted() {
     if (this.urlTitle) {
-      this.setNameOfItemsToSearch('comics');
+      this.setSearchType('comics');
       this.title = this.urlTitle;
     }
     this.fetchItems({ title: this.urlTitle });

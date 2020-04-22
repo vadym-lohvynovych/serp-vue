@@ -27,11 +27,10 @@ async function getRandomCharacters() {
 }
 
 async function getComics(title, offset = 0) {
-  const pathTitle = title ? `&title=${title}` : '';
+  const searchTitle = title ? `&title=${title}` : '';
+  const url = `${_defaultPath}comics?offset=${offset}${searchTitle}&apikey=${_key}`;
 
-  return await getResource(
-    `${_defaultPath}comics?offset=${offset}${pathTitle}&apikey=${_key}`
-  );
+  return await getResource(url);
 }
 
 export { getCharacters, getComics, getRandomCharacters };

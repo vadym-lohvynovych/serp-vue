@@ -8,7 +8,7 @@
         <img
           class="img mx-auto cursor-pointer w-full lazy"
           :src="placeholder"
-          :data-src="itemImagePath"
+          :data-src="path"
           alt="search-image"
         />
       </div>
@@ -38,12 +38,12 @@ export default {
   },
 
   computed: {
-    itemImagePath() {
+    path() {
       return `${this.item.thumbnail.path}/portrait_uncanny.${this.item.thumbnail.extension}`;
     }
   },
 
-  methods: mapActions(['makeItemVisible']),
+  methods: mapActions('search', ['makeItemVisible']),
 
   mounted() {
     this.makeItemVisible(this.item.index);

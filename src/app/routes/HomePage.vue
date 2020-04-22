@@ -7,10 +7,14 @@
     <Loader v-if="isLoading" />
 
     <div
-      v-else-if="searchResult && searchResult.length"
+      v-else-if="searchResult && searchResult.items && searchResult.items.length"
       class="search-result-items flex flex-wrap py-8"
     >
-      <SearchResultItem v-for="searchItem in searchResult" :key="searchItem.id" :item="searchItem" />
+      <SearchResultItem
+        v-for="searchItem in searchResult.items"
+        :key="searchItem.id"
+        :item="searchItem"
+      />
     </div>
 
     <p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
@@ -18,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
@@ -30,7 +34,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['searchResult', 'isLoading']),
+    ...mapState('search', ['searchResult', 'isLoading']),
     title() {
       return this.$route.query.title;
     }
@@ -79,7 +83,7 @@ export default {
 
   watch: {
     searchResult(value) {
-      if (value.length) {
+      if (value.items.length) {
         if (!this.isLazyEventListenerActive) {
           this.addLazyEventListener();
         }

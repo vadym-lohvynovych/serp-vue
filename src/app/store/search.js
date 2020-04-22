@@ -2,26 +2,22 @@ import * as api from '../../utils/api';
 import apiStructure from '../../utils/apiStructure';
 
 export default {
+  namespaced: true,
+
   actions: {
     fetchItems({ commit, state }, { title, offset }) {
       commit('setFetching', true);
 
-      const method = api[apiStructure[state.nameOfItemsToSearch]];
+      const method = api[apiStructure[state.searchType]];
 
       method(title, offset)
-        .then(res => {
-          commit('updateItems', res.data);
-        })
-        .catch(error => {
-          commit('setError', error);
-        })
-        .finally(() => {
-          commit('setFetching', false);
-        });
+        .then(({ data }) => commit('updateItems', data))
+        .catch(error => commit('setError', error))
+        .finally(() => commit('setFetching', false));
     },
 
-    setNameOfItemsToSearch({ commit }, name) {
-      commit('setNameOfItemsToSearch', name);
+    setSearchType({ commit }, name) {
+      commit('setSearchType', name);
     },
 
     makeItemVisible(context, index, interval = 80) {
@@ -31,7 +27,7 @@ export default {
 
   mutations: {
     setFetching(state, value) {
-      state.fetching = value;
+      state.isLoading = value;
     },
 
     updateItems(state, items) {
@@ -49,8 +45,8 @@ export default {
       };
     },
 
-    setNameOfItemsToSearch(state, name) {
-      state.nameOfItemsToSearch = name;
+    setSearchType(state, name) {
+      state.searchType = name;
     },
 
     makeItemVisible(state, { index, interval }) {
@@ -66,23 +62,8 @@ export default {
 
   state: {
     searchResult: null,
-    fetching: false,
+    isLoading: false,
     error: false,
-    nameOfItemsToSearch: 'random'
-  },
-
-  getters: {
-    searchResult(state) {
-      return state.searchResult && state.searchResult.items;
-    },
-    isLoading(state) {
-      return state.fetching;
-    },
-    error(state) {
-      return state.error;
-    },
-    nameOfItemsToSearch(state) {
-      return state.nameOfItemsToSearch;
-    }
+    searchType: 'all'
   }
 };
