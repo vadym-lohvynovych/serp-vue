@@ -1,19 +1,35 @@
 import * as api from '../../utils/api';
 import apiStructure from '../../utils/apiStructure';
 
+function getMethod(itemType, methodType) {
+  return api[apiStructure[itemType][methodType]];
+}
+
 export default {
   namespaced: true,
 
   actions: {
     fetchItems({ commit, state }, { title, offset }) {
-      commit('setFetching', true);
+      commit('setLoading', true);
 
-      const method = api[apiStructure[state.searchType]];
+      const method = getMethod(state.searchType, 'search');
 
       method(title, offset)
         .then(({ data }) => commit('updateItems', data))
         .catch(error => commit('setError', error))
-        .finally(() => commit('setFetching', false));
+        .finally(() => commit('setLoading', false));
+    },
+
+    getItem({ commit }, { id, itemType, offset }) {
+      commit('setLoading', true);
+      commit('cleanCurrentItemState');
+
+      const method = getMethod(itemType, 'get');
+
+      method(id, offset)
+        .then(({ data }) => commit('setCurrentItem', data.results[0]))
+        .catch(error => commit('setError', error))
+        .finally(() => commit('setLoading', false));
     },
 
     setSearchType({ commit }, name) {
@@ -26,7 +42,7 @@ export default {
   },
 
   mutations: {
-    setFetching(state, value) {
+    setLoading(state, value) {
       state.isLoading = value;
     },
 
@@ -34,15 +50,23 @@ export default {
       const { results, ...rest } = items;
 
       state.searchResult = {
-        items: results.map(({ id, title, name, thumbnail }, index) => ({
-          id,
+        items: results.map(({ title, name, ...restInfo }, index) => ({
           title: title ? title : name,
-          thumbnail,
           index,
-          visibility: 'hidden'
+          visibility: 'hidden',
+          ...restInfo
         })),
         ...rest
       };
+    },
+
+    setCurrentItem(state, item) {
+      const title = item.title || item.name;
+      state.currentItem = { ...item, title };
+    },
+
+    cleanCurrentItemState(state) {
+      state.currentItem = null;
     },
 
     setSearchType(state, name) {
@@ -62,6 +86,7 @@ export default {
 
   state: {
     searchResult: null,
+    currentItem: null,
     isLoading: false,
     error: false,
     searchType: 'all'
