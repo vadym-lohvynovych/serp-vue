@@ -14,8 +14,9 @@
         <div class="loader"></div>
         <div class="loader"></div>
       </div>
-      <div v-else class="text-center md:text-left py-5 md:py-0">
-        <h1 class="text-2xl">{{ currentItem && currentItem.title }}</h1>
+
+      <div v-else-if="currentItem" class="text-center md:text-left py-5 md:py-0">
+        <h1 class="text-2xl">{{ currentItem.title }}</h1>
         <div class="my-4">
           <a
             v-if="detailsLink"
@@ -24,9 +25,7 @@
             class="bg-indigo-600 px-5 py-1 hover:bg-indigo-700 rounded"
           >More Details</a>
         </div>
-      </div>
 
-      <div v-if="currentItem">
         <AdditionalItems
           v-for="(itemName, index) in existingAdditionalItems"
           :key="index"
