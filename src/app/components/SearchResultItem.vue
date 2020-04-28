@@ -3,6 +3,7 @@
     <div
       class="search-result-item relative rounded"
       :class="{ 'opacity-0': item.visibility === 'hidden' }"
+      @click="goToItemPage"
     >
       <div class="object-cover object-center">
         <img
@@ -25,6 +26,8 @@
 <script>
 import { mapActions } from 'vuex';
 import placeholder from '../images/placeholder.png';
+import changeRoute from '../helpers/changeRoute';
+import getPathFromThumbnail from '../helpers/getPathFromThumbnail';
 
 export default {
   props: {
@@ -39,11 +42,17 @@ export default {
 
   computed: {
     path() {
-      return `${this.item.thumbnail.path}/portrait_uncanny.${this.item.thumbnail.extension}`;
+      return getPathFromThumbnail(this.item.thumbnail);
     }
   },
 
-  methods: mapActions('search', ['makeItemVisible']),
+  methods: {
+    ...mapActions('search', ['makeItemVisible', 'setSearchType']),
+
+    goToItemPage() {
+      changeRoute(this.item.resourceURI, this.$route, this.$router);
+    }
+  },
 
   mounted() {
     this.makeItemVisible(this.item.index);

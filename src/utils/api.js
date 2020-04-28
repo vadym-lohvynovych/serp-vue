@@ -13,10 +13,37 @@ async function getResource(url) {
   return await res.json();
 }
 
-async function getCharacters(offset = 0) {
+async function searchCharacters(offset = 0) {
   return await getResource(
     `${_defaultPath}characters?offset=${offset}&apikey=${_key}`
   );
+}
+
+async function getCharacterById(id) {
+  return await getResource(`${_defaultPath}characters/${id}?apikey=${_key}`);
+}
+
+async function searchComics(title, offset = 0) {
+  const searchTitle = title ? `&title=${title}` : '';
+  const url = `${_defaultPath}comics?offset=${offset}${searchTitle}&apikey=${_key}`;
+
+  return await getResource(url);
+}
+
+async function getComicsById(id) {
+  return await getResource(`${_defaultPath}comics/${id}?apikey=${_key}`);
+}
+
+async function getStoryById(id) {
+  return await getResource(`${_defaultPath}stories/${id}?apikey=${_key}`);
+}
+
+async function getSeriesById(id) {
+  return await getResource(`${_defaultPath}series/${id}?apikey=${_key}`);
+}
+
+async function getCreatorById(id) {
+  return await getResource(`${_defaultPath}creators/${id}?apikey=${_key}`);
 }
 
 async function getRandomCharacters() {
@@ -26,11 +53,13 @@ async function getRandomCharacters() {
   );
 }
 
-async function getComics(title, offset = 0) {
-  const searchTitle = title ? `&title=${title}` : '';
-  const url = `${_defaultPath}comics?offset=${offset}${searchTitle}&apikey=${_key}`;
-
-  return await getResource(url);
-}
-
-export { getCharacters, getComics, getRandomCharacters };
+export {
+  searchCharacters,
+  getCharacterById,
+  searchComics,
+  getComicsById,
+  getRandomCharacters,
+  getStoryById,
+  getSeriesById,
+  getCreatorById
+};
