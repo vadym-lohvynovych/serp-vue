@@ -1,8 +1,8 @@
 import * as api from '../../utils/api';
 import apiStructure from '../../utils/apiStructure';
 
-function getMethod(itemType, methodType) {
-  return api[apiStructure[itemType][methodType]];
+function getMethod(methodType, itemType) {
+  return api[apiStructure[methodType][itemType]];
 }
 
 export default {
@@ -12,7 +12,7 @@ export default {
     fetchItems({ commit, state }, { title, offset }) {
       commit('setLoading', true);
 
-      const method = getMethod(state.searchType, 'search');
+      const method = getMethod('search', state.searchType);
 
       method(title, offset)
         .then(({ data }) => commit('updateItems', data))
@@ -20,13 +20,13 @@ export default {
         .finally(() => commit('setLoading', false));
     },
 
-    getItem({ commit }, { id, itemType, offset }) {
+    getItem({ commit }, { id, itemType }) {
       commit('setLoading', true);
       commit('cleanCurrentItemState');
 
-      const method = getMethod(itemType, 'get');
+      const method = getMethod('getById', itemType);
 
-      method(id, offset)
+      method(id)
         .then(({ data }) => commit('setCurrentItem', data.results[0]))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
