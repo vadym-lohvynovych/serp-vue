@@ -9,7 +9,8 @@
 </template>
 
 <style>
-a {
+a,
+.with-transition {
   transition: 0.2s;
 }
 </style>
