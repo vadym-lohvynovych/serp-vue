@@ -6,16 +6,16 @@
       @click="goToItemPage"
     >
       <div class="object-cover object-center">
-        <div class="image">
+        <div class="image-box with-transition">
           <img
-            class="img mx-auto cursor-pointer w-full lazy"
+            class="img with-transition mx-auto cursor-pointer w-full lazy"
             :src="placeholder"
             :data-src="path"
             alt="search-image"
           />
         </div>
         <h2
-          class="title overflow-hidden rounded py-3 lg:py-5 px-1 font-bold text-sm md:text-md lg:text-xl text-center cursor-pointer w-full"
+          class="title with-transition overflow-hidden rounded py-3 lg:py-5 px-1 font-bold text-sm md:text-md lg:text-xl text-center cursor-pointer w-full"
         >{{ item.title }}</h2>
       </div>
     </div>
@@ -60,16 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.title,
-img,
-.image {
-  transition: 0.25s ease-in-out;
-}
-
-.title {
-  // color: #fff;
-}
-
 img {
   transition: transform 0.2s ease-in-out, filter 0.3s ease-in;
   &.lazy {
@@ -77,12 +67,12 @@ img {
   }
 }
 .search-result-item {
-  .image {
+  .image-box {
     overflow: hidden;
     box-shadow: 0 0 5px #000;
   }
   &:hover {
-    .image {
+    .image-box {
       box-shadow: 0 0 15px #000;
     }
     img {
