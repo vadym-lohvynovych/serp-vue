@@ -103,8 +103,7 @@ export default {
 
     paginationClassObject(n) {
       return {
-        active: n == this.currentPage,
-        'bg-indigo-500': n == this.currentPage,
+        'active bg-indigo-500': n == this.currentPage,
         'py-1 px-2 rounded mx-1 bg-indigo-300 text-black shadow-xl cursor-pointer hover:bg-indigo-500 with-transition': true
       };
     },
