@@ -22,7 +22,7 @@ export default {
 
   computed: {
     pagesCount() {
-      return Math.floor(this.total / this.limit);
+      return Math.floor(this.total / this.limit) + 1;
     },
 
     currentPage() {
@@ -40,7 +40,7 @@ export default {
 
       this.fetchItems({
         title,
-        offset: pageNumber * this.limit
+        offset: (pageNumber - 1) * this.limit
       });
     },
 

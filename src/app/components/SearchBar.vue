@@ -69,7 +69,7 @@ export default {
 
     this.fetchItems({
       title: this.urlTitle,
-      offset: page ? page * limit : 0
+      offset: page ? (page - 1) * limit : 0
     });
   }
 };
