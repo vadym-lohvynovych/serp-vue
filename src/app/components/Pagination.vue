@@ -1,29 +1,18 @@
 <template>
-  <div class="flex items-center items-center justify-center">
+  <div class="flex items-center items-center justify-center py-6">
     <div
       v-if="currentPage !== 1"
       @click="changePage(currentPage - 1)"
       class="arrow arrow-left py-1 px-2 mx-1 bg-indigo-300 hover:bg-indigo-600 with-transition rounded-full cursor-pointer"
     ></div>
 
-    <div v-if="pagesCount < 7" class="flex items-center items-center justify-center py-6">
+    <div v-for="(page, idx) in pagesArray" :key="idx">
       <p
-        v-for="n in pagesCount"
-        :key="n"
-        @click="changePage(n)"
-        :class="paginationClassObject(n)"
-      >{{ n }}</p>
-    </div>
-
-    <div v-else class="flex items-center items-center justify-center py-6">
-      <div v-for="(page, idx) in pagesArray" :key="idx">
-        <p
-          v-if="typeof page === 'number'"
-          @click="changePage(page)"
-          :class="paginationClassObject(page)"
-        >{{ page }}</p>
-        <p v-else-if="page === 'dots' && shoultRenderDots(idx)" class="py-1 px-2 mx-1">...</p>
-      </div>
+        v-if="typeof page === 'number'"
+        @click="changePage(page)"
+        :class="paginationClassObject(page)"
+      >{{ page }}</p>
+      <p v-else-if="page === 'dots' && shoultRenderDots(idx)" class="py-1 px-2 mx-1">...</p>
     </div>
 
     <div
@@ -54,7 +43,13 @@ export default {
     },
 
     pagesArray() {
-      if (this.currentPage <= 3) {
+      if (this.pagesCount <= 10) {
+        let arr = [];
+        for (let i = 1; i <= this.pagesCount; i++) {
+          arr.push(i);
+        }
+        return arr;
+      } else if (this.currentPage <= 3) {
         return [
           1,
           2,
@@ -94,6 +89,8 @@ export default {
     ...mapActions('search', ['fetchItems', 'setSearchType']),
 
     changePage(pageNumber) {
+      if (pageNumber === this.currentPage) return;
+
       const title = this.$route.query.title;
 
       this.$router.push({ query: { title, page: pageNumber } });
@@ -107,7 +104,7 @@ export default {
     paginationClassObject(n) {
       return {
         active: this.isActive(n),
-        'bg-indigo-600': this.isActive(n),
+        'bg-indigo-500': this.isActive(n),
         'py-1 px-2 rounded mx-1 bg-indigo-300 text-black shadow-xl cursor-pointer hover:bg-indigo-500 with-transition': true
       };
     },
