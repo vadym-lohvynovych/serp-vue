@@ -86,7 +86,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('search', ['fetchItems', 'setSearchType']),
+    ...mapActions('search', ['fetchItems']),
 
     changePage(pageNumber) {
       if (pageNumber === this.currentPage) return;
