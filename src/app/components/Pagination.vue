@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div class="flex items-center items-center justify-center">
+    <div
+      v-if="currentPage !== 1"
+      @click="changePage(currentPage - 1)"
+      class="arrow arrow-left py-1 px-2 mx-1 bg-indigo-300 hover:bg-indigo-600 with-transition rounded-full cursor-pointer"
+    ></div>
+
     <div v-if="pagesCount < 7" class="flex items-center items-center justify-center py-6">
       <p
         v-for="n in pagesCount"
@@ -19,6 +25,12 @@
         <p v-else-if="page === 'dots' && shoultRenderDots(idx)" class="py-1 px-2 mx-1">...</p>
       </div>
     </div>
+
+    <div
+      v-if="currentPage !== pagesCount"
+      @click="changePage(currentPage + 1)"
+      class="arrow arrow-right py-1 px-2 mx-1 bg-indigo-300 hover:bg-indigo-600 with-transition rounded-full cursor-pointer"
+    ></div>
   </div>
 </template>
 
@@ -114,4 +126,30 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.arrow {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  &:after {
+    position: absolute;
+    content: '';
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    width: 35%;
+    height: 35%;
+    border: 2px solid rgb(30, 22, 51);
+  }
+  &-left:after {
+    border-right: none;
+    border-bottom: none;
+  }
+  &-right:after {
+    border-left: none;
+    border-top: none;
+  }
+}
+</style>
  
