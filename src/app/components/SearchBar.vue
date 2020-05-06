@@ -45,7 +45,7 @@ export default {
 
     search() {
       this.setSearchType('comics');
-      if (this.title.length > 2 && this.title !== this.urlTitle) {
+      if (this.title.length > 2) {
         this.$router.push({ query: { title: this.title } });
         this.fetchItems({ title: this.title });
       } else if (this.title.length < 3) {
