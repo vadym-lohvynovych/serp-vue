@@ -103,8 +103,8 @@ export default {
 
     paginationClassObject(n) {
       return {
-        active: this.isActive(n),
-        'bg-indigo-500': this.isActive(n),
+        active: n == this.currentPage,
+        'bg-indigo-500': n == this.currentPage,
         'py-1 px-2 rounded mx-1 bg-indigo-300 text-black shadow-xl cursor-pointer hover:bg-indigo-500 with-transition': true
       };
     },
@@ -115,10 +115,6 @@ export default {
       } else {
         return this.pagesArray[dotsIndex - 1] !== this.pagesCount - 1;
       }
-    },
-
-    isActive(n) {
-      return n == this.currentPage;
     }
   }
 };
