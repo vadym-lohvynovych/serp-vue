@@ -6,8 +6,8 @@ async function getResource(url) {
   const res = await fetch(`${url}`);
 
   if (!res.ok) {
-    console.log(res);
-    throw new Error(`${url} \n Status: ${res.status}`);
+    console.error(res);
+    return Promise.reject(res);
   }
 
   return await res.json();
