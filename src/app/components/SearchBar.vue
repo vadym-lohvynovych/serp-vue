@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
@@ -34,6 +34,7 @@ export default {
   },
 
   computed: {
+    ...mapState('search', ['searchResult']),
     urlTitle() {
       return this.$route.query.title;
     }
@@ -44,13 +45,14 @@ export default {
 
     search() {
       this.setSearchType('comics');
-      if (this.title.length > 2 && this.title !== this.urlTitle) {
-        this.$router.push(`?title=${this.title}`);
+      if (this.title.length > 2) {
+        this.$router.push({ query: { title: this.title } });
         this.fetchItems({ title: this.title });
       } else if (this.title.length < 3) {
         this.error = 'Title should be at least 3 characters long';
       }
     },
+
     removeError() {
       this.error = '';
     }
@@ -61,7 +63,14 @@ export default {
       this.setSearchType('comics');
       this.title = this.urlTitle;
     }
-    this.fetchItems({ title: this.urlTitle });
+
+    const page = this.$route.query.page;
+    const limit = this.searchResult?.limit || 20;
+
+    this.fetchItems({
+      title: this.urlTitle,
+      offset: page ? (page - 1) * limit : 0
+    });
   }
 };
 </script>

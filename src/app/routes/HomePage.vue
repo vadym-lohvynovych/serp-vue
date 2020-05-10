@@ -6,14 +6,21 @@
 
     <Loader v-if="isLoading" />
 
-    <div
-      v-else-if="searchResult && searchResult.items && searchResult.items.length"
-      class="search-result-items flex flex-wrap py-8"
-    >
-      <SearchResultItem
-        v-for="searchItem in searchResult.items"
-        :key="searchItem.id"
-        :item="searchItem"
+    <div v-else-if="searchResult && searchResult.items && searchResult.items.length">
+      <div class="search-result-items flex flex-wrap py-8">
+        <SearchResultItem
+          v-for="searchItem in searchResult.items"
+          :key="searchItem.id"
+          :item="searchItem"
+        />
+      </div>
+
+      <Pagination
+        v-if="searchType !== 'all'"
+        :limit="searchResult.limit"
+        :offset="searchResult.offset"
+        :total="searchResult.total"
+        @changePage="changePage"
       />
     </div>
 
@@ -22,10 +29,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
+import Pagination from '../components/Pagination.vue';
 
 export default {
   data() {
@@ -34,13 +42,15 @@ export default {
     };
   },
   computed: {
-    ...mapState('search', ['searchResult', 'isLoading']),
+    ...mapState('search', ['searchResult', 'isLoading', 'searchType']),
     title() {
       return this.$route.query.title;
     }
   },
 
   methods: {
+    ...mapActions('search', ['fetchItems']),
+
     lazyLoad() {
       let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
       let active = false;
@@ -78,6 +88,17 @@ export default {
     removeLazyEventListener() {
       window.removeEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = false;
+    },
+
+    changePage(page) {
+      const title = this.$route.query.title;
+
+      this.$router.push({ query: { title, page } });
+
+      this.fetchItems({
+        title,
+        offset: (page - 1) * this.searchResult.limit
+      });
     }
   },
 
@@ -104,7 +125,8 @@ export default {
   components: {
     SearchBar,
     Loader,
-    SearchResultItem
+    SearchResultItem,
+    Pagination
   }
 };
 </script>

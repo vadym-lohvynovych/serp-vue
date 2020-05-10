@@ -9,7 +9,7 @@
     </div>
     <div class="w-full md:w-3/4 px-3 md:pl-8 md:pr-0">
       <div v-if="isLoading">
-        <div class="loader head-loader w-1/3 rounded bg-infinite-300"></div>
+        <div class="loader head-loader w-1/3 rounded bg-infinite-300 mt-5 md:mt-0"></div>
         <div class="loader"></div>
         <div class="loader"></div>
         <div class="loader"></div>
