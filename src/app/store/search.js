@@ -14,6 +14,8 @@ export default {
 
       const method = getMethod('search', state.searchType);
 
+      commit('setError', false);
+
       method(title, offset)
         .then(({ data }) => commit('updateItems', data))
         .catch(error => commit('setError', error))
@@ -25,6 +27,8 @@ export default {
       commit('cleanCurrentItemState');
 
       const method = getMethod('getById', itemType);
+
+      commit('setError', false);
 
       method(id)
         .then(({ data }) => commit('setCurrentItem', data.results[0]))

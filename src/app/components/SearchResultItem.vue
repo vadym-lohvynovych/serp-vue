@@ -15,7 +15,7 @@
           />
         </div>
         <h2
-          class="title with-transition overflow-hidden rounded py-3 lg:py-5 px-1 font-bold text-sm md:text-md lg:text-xl text-center cursor-pointer w-full"
+          class="title overflow-hidden rounded py-3 lg:py-5 px-1 font-bold text-sm md:text-md lg:text-xl text-center cursor-pointer w-full"
         >{{ item.title }}</h2>
       </div>
     </div>
@@ -76,7 +76,7 @@ img {
       box-shadow: 0 0 15px #000;
     }
     img {
-      transform: scale(1.04) rotate(2deg);
+      transform: scale(1.04);
     }
   }
 }

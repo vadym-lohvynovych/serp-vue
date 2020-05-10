@@ -4,27 +4,29 @@
 
     <SearchBar />
 
-    <Loader v-if="isLoading" />
+    <ErrorBoundary :error="error">
+      <Loader v-if="isLoading" />
 
-    <div v-else-if="searchResult && searchResult.items && searchResult.items.length">
-      <div class="search-result-items flex flex-wrap py-8">
-        <SearchResultItem
-          v-for="searchItem in searchResult.items"
-          :key="searchItem.id"
-          :item="searchItem"
+      <div v-else-if="searchResult && searchResult.items && searchResult.items.length">
+        <div class="search-result-items flex flex-wrap py-8">
+          <SearchResultItem
+            v-for="searchItem in searchResult.items"
+            :key="searchItem.id"
+            :item="searchItem"
+          />
+        </div>
+
+        <Pagination
+          v-if="searchType !== 'all'"
+          :limit="searchResult.limit"
+          :offset="searchResult.offset"
+          :total="searchResult.total"
+          @changePage="changePage"
         />
       </div>
 
-      <Pagination
-        v-if="searchType !== 'all'"
-        :limit="searchResult.limit"
-        :offset="searchResult.offset"
-        :total="searchResult.total"
-        @changePage="changePage"
-      />
-    </div>
-
-    <p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
+      <p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
+    </ErrorBoundary>
   </div>
 </template>
 
@@ -33,6 +35,7 @@ import { mapState, mapActions } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
+import ErrorBoundary from '../components/ErrorBoundary.vue';
 import Pagination from '../components/Pagination.vue';
 
 export default {
@@ -42,7 +45,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('search', ['searchResult', 'isLoading', 'searchType']),
+    ...mapState('search', ['searchResult', 'isLoading', 'error', 'searchType']),
     title() {
       return this.$route.query.title;
     }
@@ -126,6 +129,7 @@ export default {
     SearchBar,
     Loader,
     SearchResultItem,
+    ErrorBoundary,
     Pagination
   }
 };
