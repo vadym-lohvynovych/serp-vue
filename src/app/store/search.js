@@ -17,9 +17,7 @@ export default {
       commit('setError', false);
 
       method(title, offset)
-        .then(({ data }) => {
-          commit('updateItems', data);
-        })
+        .then(({ data }) => commit('updateItems', data))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
     },
@@ -33,9 +31,7 @@ export default {
       commit('setError', false);
 
       method(id)
-        .then(({ data }) => {
-          commit('setCurrentItem', data.results[0]);
-        })
+        .then(({ data }) => commit('setCurrentItem', data.results[0]))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
     },
