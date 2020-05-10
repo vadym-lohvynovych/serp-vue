@@ -1,18 +1,18 @@
 <template>
-  <div class="flex items-center items-center justify-center py-6">
+  <div v-if="total > limit" class="flex items-center items-center justify-center py-6">
     <div
       v-if="currentPage !== 1"
       @click="changePage(currentPage - 1)"
       class="arrow arrow-left py-1 px-2 mx-1 bg-indigo-300 hover:bg-indigo-600 with-transition rounded-full cursor-pointer"
     ></div>
 
-    <div v-for="(page, idx) in pagesArray" :key="idx">
+    <div v-for="(page, idx) in getPages(pagesCount, currentPage)" :key="idx">
       <p
         v-if="typeof page === 'number'"
         @click="changePage(page)"
         :class="paginationClassObject(page)"
       >{{ page }}</p>
-      <p v-else-if="page === 'dots' && shoultRenderDots(idx)" class="py-1 px-2 mx-1">...</p>
+      <p v-else-if="page === '...'" class="py-1 px-2 mx-1">...</p>
     </div>
 
     <div
@@ -35,70 +35,17 @@ export default {
 
   computed: {
     pagesCount() {
-      return Math.floor(this.total / this.limit) + 1;
+      return ~~(this.total / this.limit) + 1;
     },
 
     currentPage() {
       return Number(this.$route.query.page) || 1;
-    },
-
-    pagesArray() {
-      if (this.pagesCount <= 10) {
-        let arr = [];
-        for (let i = 1; i <= this.pagesCount; i++) {
-          arr.push(i);
-        }
-        return arr;
-      } else if (this.currentPage <= 3) {
-        return [
-          1,
-          2,
-          3,
-          4,
-          'dots',
-          this.pagesCount - 2,
-          this.pagesCount - 1,
-          this.pagesCount
-        ];
-      } else if (this.currentPage >= this.pagesCount - 2) {
-        return [
-          1,
-          'dots',
-          this.pagesCount - 3,
-          this.pagesCount - 2,
-          this.pagesCount - 1,
-          this.pagesCount
-        ];
-      } else {
-        return [
-          1,
-          'dots',
-          this.currentPage - 2,
-          this.currentPage - 1,
-          this.currentPage,
-          this.currentPage + 1,
-          this.currentPage + 2,
-          'dots',
-          this.pagesCount
-        ];
-      }
     }
   },
 
   methods: {
-    ...mapActions('search', ['fetchItems']),
-
     changePage(pageNumber) {
-      if (pageNumber === this.currentPage) return;
-
-      const title = this.$route.query.title;
-
-      this.$router.push({ query: { title, page: pageNumber } });
-
-      this.fetchItems({
-        title,
-        offset: (pageNumber - 1) * this.limit
-      });
+      this.$emit('changePage', pageNumber);
     },
 
     paginationClassObject(n) {
@@ -108,12 +55,27 @@ export default {
       };
     },
 
-    shoultRenderDots(dotsIndex) {
-      if (dotsIndex === 1) {
-        return this.pagesArray[dotsIndex + 1] !== 2;
-      } else {
-        return this.pagesArray[dotsIndex - 1] !== this.pagesCount - 1;
+    getPages(count, current, distance = 2, pagesWithoutDots = 8) {
+      if (count <= pagesWithoutDots) {
+        return [...Array(count).keys()].map(i => ++i);
       }
+      if (count === 1) {
+        return [1];
+      }
+      const lenseSize = 1 + distance * 2;
+      const lense = [...Array(lenseSize).keys()]
+        .map(i => i + current - distance) // this line handled all my problems, brilliant
+        .filter(i => i > 1 && i < count);
+
+      return count > lenseSize
+        ? [
+            1,
+            ...(lense[0] === 2 ? [] : ['...']),
+            ...lense,
+            ...(lense[lense.length - 1] === count - 1 ? [] : ['...']),
+            count
+          ]
+        : [1, ...lense, count];
     }
   }
 };

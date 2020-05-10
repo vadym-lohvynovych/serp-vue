@@ -16,10 +16,11 @@
       </div>
 
       <Pagination
-        v-if="searchResult.total > 20 && searchType !== 'all'"
+        v-if="searchType !== 'all'"
         :limit="searchResult.limit"
         :offset="searchResult.offset"
         :total="searchResult.total"
+        @changePage="changePage"
       />
     </div>
 
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
@@ -48,6 +49,8 @@ export default {
   },
 
   methods: {
+    ...mapActions('search', ['fetchItems']),
+
     lazyLoad() {
       let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
       let active = false;
@@ -85,6 +88,17 @@ export default {
     removeLazyEventListener() {
       window.removeEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = false;
+    },
+
+    changePage(page) {
+      const title = this.$route.query.title;
+
+      this.$router.push({ query: { title, page } });
+
+      this.fetchItems({
+        title,
+        offset: (page - 1) * this.searchResult.limit
+      });
     }
   },
 
