@@ -6,12 +6,12 @@
   >
     <div class="input-title-wrapper relative">
       <input
-        v-model="title"
+        v-model="searchQuery"
         class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
         type="text"
         @blur="removeError"
         @focus="removeError"
-        placeholder="Title"
+        placeholder="Search Query"
       />
       <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
     </div>
@@ -28,15 +28,18 @@ import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      title: '',
+      searchQuery: '',
       error: ''
     };
   },
 
   computed: {
-    ...mapState('search', ['searchResult']),
-    urlTitle() {
-      return this.$route.query.title;
+    ...mapState('search', ['searchResult', 'searchType']),
+    urlQuery() {
+      return this.$route.query.searchQuery;
+    },
+    urlSearchType() {
+      return this.$route.query.searchType;
     }
   },
 
@@ -44,12 +47,14 @@ export default {
     ...mapActions('search', ['fetchItems', 'setSearchType']),
 
     search() {
-      this.setSearchType('comics');
-      if (this.title.length > 2) {
-        this.$router.push({ query: { title: this.title } });
-        this.fetchItems({ title: this.title });
-      } else if (this.title.length < 3) {
-        this.error = 'Title should be at least 3 characters long';
+      this.searchType === 'all' && this.setSearchType('comics');
+      if (this.searchQuery.length > 2) {
+        this.$router.push({
+          query: { searchType: this.searchType, searchQuery: this.searchQuery }
+        });
+        this.fetchItems({ searchQuery: this.searchQuery });
+      } else if (this.searchQuery.length < 3) {
+        this.error = 'Search query should be at least 3 characters long';
       }
     },
 
@@ -59,16 +64,14 @@ export default {
   },
 
   mounted() {
-    if (this.urlTitle) {
-      this.setSearchType('comics');
-      this.title = this.urlTitle;
-    }
+    this.urlSearchType && this.setSearchType(this.urlSearchType);
+    this.searchQuery = this.urlQuery || '';
 
     const page = this.$route.query.page;
     const limit = this.searchResult?.limit || 20;
 
     this.fetchItems({
-      title: this.urlTitle,
+      searchQuery: this.urlQuery,
       offset: page ? (page - 1) * limit : 0
     });
   }

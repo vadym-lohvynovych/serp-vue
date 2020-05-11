@@ -94,12 +94,12 @@ export default {
     },
 
     changePage(page) {
-      const title = this.$route.query.title;
+      const { searchType, searchQuery } = this.$route.query;
 
-      this.$router.push({ query: { title, page } });
+      this.$router.push({ query: { searchType, searchQuery, page } });
 
       this.fetchItems({
-        title,
+        searchQuery,
         offset: (page - 1) * this.searchResult.limit
       });
     }

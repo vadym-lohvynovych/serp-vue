@@ -1,22 +1,20 @@
 import * as api from '../../utils/api';
-import apiStructure from '../../utils/apiStructure';
-
-function getMethod(methodType, itemType) {
-  return api[apiStructure[methodType][itemType]];
-}
 
 export default {
   namespaced: true,
 
   actions: {
-    fetchItems({ commit, state }, { title, offset }) {
+    fetchItems({ commit, state }, { searchQuery, offset }) {
       commit('setLoading', true);
 
-      const method = getMethod('search', state.searchType);
+      const type =
+        state.searchType.charAt(0).toUpperCase() + state.searchType.slice(1);
+
+      const methodName = `search${type}`;
 
       commit('setError', false);
 
-      method(title, offset)
+      api[methodName](searchQuery, offset)
         .then(({ data }) => commit('updateItems', data))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
@@ -26,11 +24,15 @@ export default {
       commit('setLoading', true);
       commit('cleanCurrentItemState');
 
-      const method = getMethod('getById', itemType);
+      const type = itemType.charAt(0).toUpperCase() + itemType.slice(1);
+
+      const methodName = `get${type}ById`;
+
+      console.log(methodName);
 
       commit('setError', false);
 
-      method(id)
+      api[methodName](id)
         .then(({ data }) => commit('setCurrentItem', data.results[0]))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
