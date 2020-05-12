@@ -72,7 +72,7 @@ export default {
 
   mounted() {
     this.contentBlock = document.querySelector('.content');
-    this.lazy = lazyImageLoading('img[data-lazy]', 'lazy', this.contentBlock);
+    this.lazy = lazyImageLoading('img[data-lazy]', 'lazy');
   },
 
   destroyed() {
