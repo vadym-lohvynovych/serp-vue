@@ -2,6 +2,8 @@ const _defaultPath = 'https://gateway.marvel.com/v1/public/';
 
 const _key = 'c0ad5a9aa209a304e59edec435f85768';
 
+const createSearchQuery = (query, name) => (query ? `&${name}=${query}` : '');
+
 async function getResource(url) {
   const res = await fetch(`${url}`);
 
@@ -14,22 +16,22 @@ async function getResource(url) {
 }
 
 async function searchCharacters(searchQuery, offset = 0) {
-  const name = searchQuery ? `&name=${searchQuery}` : '';
-  const url = `${_defaultPath}characters?offset=${offset}${name}&apikey=${_key}`;
+  const query = createSearchQuery(searchQuery, 'name');
+  const url = `${_defaultPath}characters?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
 }
 
 async function searchComics(searchQuery, offset = 0) {
-  const searchTitle = searchQuery ? `&title=${searchQuery}` : '';
-  const url = `${_defaultPath}comics?offset=${offset}${searchTitle}&apikey=${_key}`;
+  const query = createSearchQuery(searchQuery, 'title');
+  const url = `${_defaultPath}comics?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
 }
 
 async function searchSeries(searchQuery, offset = 0) {
-  const searchTitle = searchQuery ? `&title=${searchQuery}` : '';
-  const url = `${_defaultPath}comics?offset=${offset}${searchTitle}&apikey=${_key}`;
+  const query = createSearchQuery(searchQuery, 'title');
+  const url = `${_defaultPath}comics?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
 }
