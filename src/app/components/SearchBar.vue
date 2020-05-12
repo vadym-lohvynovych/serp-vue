@@ -1,9 +1,13 @@
 <template>
-  <form action="#" class="search-bar px-4" @submit.prevent="search">
+  <form
+    action="#"
+    class="search-bar flex items-center justify-center text-sm"
+    @submit.prevent="search"
+  >
     <div class="input-title-wrapper relative">
       <input
         v-model="searchQuery"
-        class="py-1 px-5 rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
+        class="py-1 px-5 rounded-full rounded-r bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
         type="text"
         @blur="removeError"
         @focus="removeError"
@@ -11,12 +15,10 @@
       />
       <p v-if="error" class="input-error absolute py-1 px-2 rounded bg-red-400">{{ error }}</p>
     </div>
-    <div class="flex justify-center">
-      <button
-        class="py-1 px-6 mt-4 rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
-        type="submit"
-      >Find</button>
-    </div>
+    <button
+      class="py-1 px-6 rounded-full rounded-l bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
+      type="submit"
+    >Find</button>
   </form>
 </template>
 
