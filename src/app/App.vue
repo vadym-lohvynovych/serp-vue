@@ -65,4 +65,11 @@ a,
     }
   }
 }
+
+@media screen and (max-width: 430px) {
+  .sidebar-wrapper {
+    left: -100%;
+    width: 100%;
+  }
+}
 </style>

@@ -48,9 +48,11 @@ export default {
       this.searchType === 'all' && this.setSearchType('comics');
       if (this.searchQuery.length > 2) {
         this.$router.push({
+          path: '/',
           query: { searchType: this.searchType, searchQuery: this.searchQuery }
         });
         this.fetchItems({ searchQuery: this.searchQuery });
+        this.$emit('callback');
       } else if (this.searchQuery.length < 3) {
         this.error = 'Search query should be at least 3 characters long';
       }

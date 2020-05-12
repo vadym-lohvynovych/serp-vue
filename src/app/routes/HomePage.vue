@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-center text-xl my-5 font-hairline">Here you can find some comics!</h2>
+    <h2 class="text-center text-xl my-5 font-hairline">Hello there!</h2>
 
     <ErrorBoundary :error="error">
       <Loader v-if="isLoading" />

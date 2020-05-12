@@ -2,7 +2,7 @@
   <div class="search-type font-hairline my-8">
     <h2 class="text-center my-5">What are you looking for?</h2>
 
-    <div v-for="type in types" :key="type" class="text-right flex justify-end">
+    <div v-for="type in types" :key="type" class="text-right flex justify-start sm:justify-end">
       <p
         class="search-type-item with-transition relative text-right text-xl w-2/3 font-bold px-5 my-1 cursor-pointer"
         :class="{active: type === searchType}"

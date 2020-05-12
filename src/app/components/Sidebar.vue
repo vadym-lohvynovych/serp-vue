@@ -17,7 +17,7 @@
       <span class="block">App.</span>
     </router-link>
 
-    <SearchBar />
+    <SearchBar @callback="$emit('toggleSidebarView')" />
 
     <SearchTypesButtons />
   </div>

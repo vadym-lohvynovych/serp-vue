@@ -28,8 +28,6 @@ export default {
 
       const methodName = `get${type}ById`;
 
-      console.log(methodName);
-
       commit('setError', false);
 
       api[methodName](id)
