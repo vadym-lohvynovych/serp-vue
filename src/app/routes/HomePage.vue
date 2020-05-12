@@ -1,12 +1,10 @@
 <template>
   <div>
-    <h2 class="text-center text-xl my-5 font-hairline">Hello there!</h2>
-
     <ErrorBoundary :error="error">
       <Loader v-if="isLoading" />
 
       <div v-else-if="searchResult && searchResult.items && searchResult.items.length">
-        <div class="search-result-items flex flex-wrap py-8">
+        <div class="search-result-items flex flex-wrap">
           <SearchResultItem
             v-for="searchItem in searchResult.items"
             :key="searchItem.id"

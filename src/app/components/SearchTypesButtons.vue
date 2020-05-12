@@ -1,14 +1,19 @@
 <template>
-  <div class="search-type font-hairline my-8">
-    <h2 class="text-center my-5">What are you looking for?</h2>
+  <div class="search-type font-hairline mb-2 lg:mb-5">
+    <h2 class="text-center my-2 lg:my-5">Categories</h2>
 
-    <div v-for="type in types" :key="type" class="text-right flex justify-start sm:justify-end">
-      <p
-        class="search-type-item with-transition relative text-right text-xl w-2/3 font-bold px-5 my-1 cursor-pointer"
-        :class="{active: type === searchType}"
-        @click="setSearchType(type)"
-      >{{ type | capitalize }}</p>
-      <br />
+    <div class="flex items-center justify-center lg:block">
+      <div
+        v-for="type in types"
+        :key="type"
+        class="text-center lg:text-right flex justify-center lg:justify-end"
+      >
+        <p
+          class="search-type-item mx-1 lg:mx-0 with-transition relative text-right lg:text-xl lg:w-4/5 font-semibold lg:font-bold px-5 my-1 cursor-pointer"
+          :class="{active: type === searchType}"
+          @click="setSearchType(type)"
+        >{{ type | capitalize }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +36,8 @@ export default {
   },
 
   methods: {
-    ...mapActions('search', ['setSearchType'])
+    ...mapActions('search', ['setSearchType']),
+    changeSearchType() {}
   },
 
   filters: {
@@ -49,6 +55,7 @@ $pink: rgb(219, 157, 214);
   background: $teal;
   color: #000;
   transition: 0.2s;
+  margin-right: -20px;
   &:after {
     position: absolute;
     content: '';
@@ -68,6 +75,15 @@ $pink: rgb(219, 157, 214);
     &::after {
       border-left: 10px solid $pink;
     }
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .search-type-item {
+    margin-right: 0px;
+  }
+  .search-type-item:after {
+    display: none;
   }
 }
 </style>
