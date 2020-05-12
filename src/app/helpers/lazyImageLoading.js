@@ -1,6 +1,5 @@
 const createLazyListener = (selector, dataset) => () => {
   let images = document.querySelectorAll(selector);
-  console.log(images.length);
   if (images.length) {
     images = [].slice.call(images);
     setTimeout(() => {
@@ -22,8 +21,7 @@ const createLazyListener = (selector, dataset) => () => {
   }
 };
 
-export default function lazyImageLoading(selector, dataset, parent = document) {
-  console.log(23);
+export default function lazyImageLoading(selector, dataset, parent = window) {
   const listener = createLazyListener(selector, dataset);
   listener();
   parent.addEventListener('scroll', listener);
