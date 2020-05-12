@@ -54,8 +54,14 @@ a,
     left: -320px;
     width: 320px;
     z-index: 1000;
+    .search-type-item {
+      margin-right: 60px;
+    }
     &.active {
       left: 0;
+      .search-type-item {
+        margin-right: 0;
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="search-type font-hairline my-8">
-    <h2 class="text-center mb-5">What are you looking for?</h2>
+    <h2 class="text-center my-5">What are you looking for?</h2>
 
     <div v-for="type in types" :key="type" class="text-right flex justify-end">
       <p
