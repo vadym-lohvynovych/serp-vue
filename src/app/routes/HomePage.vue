@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h2 class="text-center text-xl my-5 font-hairline">Here you can find some comics!</h2>
-
-    <SearchBar />
+    <h2 class="text-center text-xl my-5 font-hairline">Hello there!</h2>
 
     <ErrorBoundary :error="error">
       <Loader v-if="isLoading" />
@@ -25,14 +23,13 @@
         />
       </div>
 
-      <p v-else-if="searchResult" class="text-center font-hairline my-8">Cant find :(</p>
+      <p v-else-if="searchResult" class="text-center font-hairline my-8">Nothing to show :(</p>
     </ErrorBoundary>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import SearchBar from '../components/SearchBar.vue';
 import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
@@ -41,7 +38,8 @@ import Pagination from '../components/Pagination.vue';
 export default {
   data() {
     return {
-      isLazyEventListenerActive: false
+      isLazyEventListenerActive: false,
+      contentBlock: null
     };
   },
   computed: {
@@ -84,22 +82,22 @@ export default {
     },
 
     addLazyEventListener() {
-      window.addEventListener('scroll', this.lazyLoad);
+      this.contentBlock.addEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = true;
     },
 
     removeLazyEventListener() {
-      window.removeEventListener('scroll', this.lazyLoad);
+      this.contentBlock.removeEventListener('scroll', this.lazyLoad);
       this.isLazyEventListenerActive = false;
     },
 
     changePage(page) {
-      const title = this.$route.query.title;
+      const { searchType, searchQuery } = this.$route.query;
 
-      this.$router.push({ query: { title, page } });
+      this.$router.push({ query: { searchType, searchQuery, page } });
 
       this.fetchItems({
-        title,
+        searchQuery,
         offset: (page - 1) * this.searchResult.limit
       });
     }
@@ -120,13 +118,13 @@ export default {
   },
 
   mounted() {
+    this.contentBlock = document.querySelector('.content');
     this.lazyLoad();
-    window.scrollTo(0, 0);
+    this.contentBlock.scrollTo(0, 0);
     this.addLazyEventListener();
   },
 
   components: {
-    SearchBar,
     Loader,
     SearchResultItem,
     ErrorBoundary,

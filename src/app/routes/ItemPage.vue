@@ -45,11 +45,13 @@ import AdditionalItems from '../components/AdditionalItems.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 import getPathFromThumbnail from '../helpers/getPathFromThumbnail';
 import placeholder from '../images/placeholder.png';
+import { searchTypes } from '../../utils/searchTypes';
 
 export default {
   data() {
     return {
-      img: placeholder
+      img: placeholder,
+      searchTypes
     };
   },
 
@@ -77,18 +79,10 @@ export default {
     existingAdditionalItems() {
       let existingAdditionalItems = [];
 
-      const additionalItemsNames = [
-        'creators',
-        'comics',
-        'characters',
-        'stories',
-        'series'
-      ];
-
       this.currentItem &&
         Object.keys(this.currentItem).forEach(key => {
           if (
-            additionalItemsNames.includes(key) &&
+            this.searchTypes.includes(key) &&
             this.currentItem[key]?.items?.length
           ) {
             existingAdditionalItems.push(key);

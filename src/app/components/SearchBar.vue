@@ -1,24 +1,22 @@
 <template>
-  <form
-    action="#"
-    class="search-bar flex items-center justify-center px-4"
-    @submit.prevent="search"
-  >
+  <form action="#" class="search-bar px-4" @submit.prevent="search">
     <div class="input-title-wrapper relative">
       <input
-        v-model="title"
-        class="py-2 px-5 rounded-r rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
+        v-model="searchQuery"
+        class="py-1 px-5 rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 focus:border-gray-700"
         type="text"
         @blur="removeError"
         @focus="removeError"
-        placeholder="Title"
+        placeholder="Search Query"
       />
-      <p v-if="error" class="input-error absolute py-1 px-4 rounded bg-red-400">{{ error }}</p>
+      <p v-if="error" class="input-error absolute py-1 px-2 rounded bg-red-400">{{ error }}</p>
     </div>
-    <button
-      class="py-2 px-5 rounded-l rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
-      type="submit"
-    >Find</button>
+    <div class="flex justify-center">
+      <button
+        class="py-1 px-6 mt-4 rounded-full bg-gray-400 focus:outline-none text-black border border-gray-600 hover:border-gray-700 font-semibold"
+        type="submit"
+      >Find</button>
+    </div>
   </form>
 </template>
 
@@ -28,15 +26,18 @@ import { mapActions, mapState } from 'vuex';
 export default {
   data() {
     return {
-      title: '',
+      searchQuery: '',
       error: ''
     };
   },
 
   computed: {
-    ...mapState('search', ['searchResult']),
-    urlTitle() {
-      return this.$route.query.title;
+    ...mapState('search', ['searchResult', 'searchType']),
+    urlQuery() {
+      return this.$route.query.searchQuery;
+    },
+    urlSearchType() {
+      return this.$route.query.searchType;
     }
   },
 
@@ -44,12 +45,16 @@ export default {
     ...mapActions('search', ['fetchItems', 'setSearchType']),
 
     search() {
-      this.setSearchType('comics');
-      if (this.title.length > 2) {
-        this.$router.push({ query: { title: this.title } });
-        this.fetchItems({ title: this.title });
-      } else if (this.title.length < 3) {
-        this.error = 'Title should be at least 3 characters long';
+      this.searchType === 'all' && this.setSearchType('comics');
+      if (this.searchQuery.length > 2) {
+        this.$router.push({
+          path: '/',
+          query: { searchType: this.searchType, searchQuery: this.searchQuery }
+        });
+        this.fetchItems({ searchQuery: this.searchQuery });
+        this.$emit('callback');
+      } else if (this.searchQuery.length < 3) {
+        this.error = 'Search query should be at least 3 characters long';
       }
     },
 
@@ -59,16 +64,14 @@ export default {
   },
 
   mounted() {
-    if (this.urlTitle) {
-      this.setSearchType('comics');
-      this.title = this.urlTitle;
-    }
+    this.urlSearchType && this.setSearchType(this.urlSearchType);
+    this.searchQuery = this.urlQuery || '';
 
     const page = this.$route.query.page;
     const limit = this.searchResult?.limit || 20;
 
     this.fetchItems({
-      title: this.urlTitle,
+      searchQuery: this.urlQuery,
       offset: page ? (page - 1) * limit : 0
     });
   }
@@ -82,7 +85,7 @@ button {
   transition: 0.2s;
 }
 input {
-  width: 250px;
+  width: 100%;
 }
 .input-error {
   top: calc(100% + 5px);
@@ -102,7 +105,6 @@ input {
   }
 }
 button {
-  width: 150px;
   &:hover {
     box-shadow: 0 0 10px #cecece62;
   }

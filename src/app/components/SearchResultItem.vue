@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/2 sm:w-1/3 md:w-1/4 px-4 py-5">
+  <div class="w-1/2 sm:w-1/3 md:w-1/4 px-5 xl:px-8 py-5">
     <div
       class="search-result-item with-transition relative rounded hover:text-pink-500"
       :class="{ 'opacity-0': item.visibility === 'hidden' }"
