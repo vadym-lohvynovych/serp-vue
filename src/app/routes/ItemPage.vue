@@ -8,7 +8,7 @@
           class="p-2 font-hairline"
         >{{ currentItem.description }}</p>
       </div>
-      <div class="w-full md:w-3/4 px-3 md:pl-8 md:pr-0">
+      <div class="w-full md:w-3/4 sm:px-3 md:pl-8 md:pr-0">
         <div v-if="isLoading">
           <div class="loader head-loader w-1/3 rounded bg-infinite-300 mt-5 md:mt-0"></div>
           <div class="loader"></div>
@@ -125,6 +125,9 @@ export default {
 
 
 <style lang="scss" scoped>
+img {
+  max-width: 300px;
+}
 .loader {
   position: relative;
   overflow: hidden;

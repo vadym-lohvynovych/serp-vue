@@ -11,7 +11,7 @@
         <p
           class="search-type-item mx-1 lg:mx-0 with-transition relative text-right lg:text-xl lg:w-4/5 font-semibold lg:font-bold px-5 my-1 cursor-pointer"
           :class="{active: type === searchType}"
-          @click="setSearchType(type)"
+          @click="changeType(type)"
         >{{ type | capitalize }}</p>
       </div>
     </div>
@@ -36,8 +36,16 @@ export default {
   },
 
   methods: {
-    ...mapActions('search', ['setSearchType']),
-    changeSearchType() {}
+    ...mapActions('search', ['setSearchType', 'fetchItems']),
+
+    changeType(type) {
+      const { searchQuery } = this.$route.query;
+      this.setSearchType(type);
+      if (searchQuery) {
+        this.$router.push({ query: { searchType: type, searchQuery } });
+        this.fetchItems({ searchQuery });
+      }
+    }
   },
 
   filters: {

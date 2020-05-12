@@ -39,9 +39,6 @@ a,
   transition: 0.2s;
 }
 
-.sidebar-wrapper {
-  transition: 0.35s ease-out;
-}
 .sidebar-wrapper,
 .content {
   height: 100vh;
@@ -54,13 +51,6 @@ a,
   .content {
     height: auto;
     overflow: auto;
-  }
-}
-
-@media screen and (max-width: 430px) {
-  .sidebar-wrapper {
-    left: -100%;
-    width: 100%;
   }
 }
 </style>
