@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto flex flex-wrap">
     <div
-      class="sidebar-wrapper sticky top-0 w-full lg:w-3/12 xl:w-1/5 relative shadow-xl bg-gray-900 lg:px-5"
+      class="sidebar-wrapper lg:sticky top-0 w-full lg:w-3/12 xl:w-1/5 relative shadow-xl bg-gray-900 lg:px-5"
       :class="{active: isSidebarActive}"
     >
       <Sidebar @toggleSidebarView="toggleSidebarView" :isActive="isSidebarActive" />
