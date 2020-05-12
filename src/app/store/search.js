@@ -1,5 +1,5 @@
 import * as api from '../../utils/api';
-import toCapitalize from '../helpers/toCapitalize';
+import capitalize from '../helpers/capitalize';
 
 export default {
   namespaced: true,
@@ -8,7 +8,7 @@ export default {
     fetchItems({ commit, state }, { searchQuery, offset }) {
       commit('setLoading', true);
 
-      const methodName = `search${toCapitalize(state.searchType)}`;
+      const methodName = `search${capitalize(state.searchType)}`;
 
       commit('setError', false);
 
@@ -22,7 +22,7 @@ export default {
       commit('setLoading', true);
       commit('cleanCurrentItemState');
 
-      const methodName = `get${toCapitalize(itemType)}ById`;
+      const methodName = `get${capitalize(itemType)}ById`;
 
       commit('setError', false);
 

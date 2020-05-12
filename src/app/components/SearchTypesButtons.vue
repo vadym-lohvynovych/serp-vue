@@ -16,7 +16,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { searchTypes } from '../../utils/searchTypes';
-import toCapitalize from '../helpers/toCapitalize';
+import capitalize from '../helpers/capitalize';
 
 export default {
   data() {
@@ -36,7 +36,7 @@ export default {
 
   filters: {
     capitalize(val) {
-      return toCapitalize(val);
+      return capitalize(val);
     }
   }
 };
