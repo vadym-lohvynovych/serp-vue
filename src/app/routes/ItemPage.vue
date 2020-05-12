@@ -112,6 +112,10 @@ export default {
     this.fetchItem();
   },
 
+  updated() {
+    document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
+  },
+
   components: {
     AdditionalItems,
     ErrorBoundary
