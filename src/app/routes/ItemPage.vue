@@ -43,7 +43,7 @@
 import { mapActions, mapState } from 'vuex';
 import AdditionalItems from '../components/AdditionalItems.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
-import getPathFromThumbnail from '../helpers/getPathFromThumbnail';
+import { getPathFromThumbnail } from '../helpers';
 import placeholder from '../images/placeholder.png';
 import { searchTypes } from '../../utils/searchTypes';
 

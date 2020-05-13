@@ -21,7 +21,16 @@ const createLazyListener = (selector, dataset) => () => {
   }
 };
 
-export default function lazyImageLoading(selector, dataset, parent = window) {
+function parseItemURL(url) {
+  const parseResult = url.match(/\w+\/\d+$/gi)[0].split('/');
+
+  return {
+    itemType: parseResult[0],
+    id: parseResult[1]
+  };
+}
+
+export function lazyImageLoading(selector, dataset, parent = window) {
   const listener = createLazyListener(selector, dataset);
   listener();
   parent.addEventListener('scroll', listener);
@@ -30,4 +39,22 @@ export default function lazyImageLoading(selector, dataset, parent = window) {
     unsubscribe: () => parent.removeEventListener('scroll', listener),
     update: listener
   };
+}
+
+export function changeItemRoute(url, route, router) {
+  const { itemType, id } = parseItemURL(url);
+
+  if (route.params.id === id && route.params.type === itemType) return;
+
+  router.push(`/${itemType}/${id}`);
+}
+
+export function getPathFromThumbnail(thumbnail) {
+  return (
+    thumbnail && `${thumbnail.path}/portrait_uncanny.${thumbnail.extension}`
+  );
+}
+
+export function capitalize(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }

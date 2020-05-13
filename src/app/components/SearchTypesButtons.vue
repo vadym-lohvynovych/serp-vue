@@ -21,7 +21,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { searchTypes } from '../../utils/searchTypes';
-import capitalize from '../helpers/capitalize';
+import { capitalize } from '../helpers';
 
 export default {
   data() {

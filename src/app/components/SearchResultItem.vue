@@ -26,8 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import placeholder from '../images/placeholder.png';
-import changeRoute from '../helpers/changeRoute';
-import getPathFromThumbnail from '../helpers/getPathFromThumbnail';
+import { changeItemRoute, getPathFromThumbnail } from '../helpers';
 
 export default {
   props: {
@@ -50,7 +49,7 @@ export default {
     ...mapActions('search', ['makeItemVisible', 'setSearchType']),
 
     goToItemPage() {
-      changeRoute(this.item.resourceURI, this.$route, this.$router);
+      changeItemRoute(this.item.resourceURI, this.$route, this.$router);
     }
   },
 

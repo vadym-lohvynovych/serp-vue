@@ -32,7 +32,7 @@ import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 import Pagination from '../components/Pagination.vue';
-import lazyImageLoading from '../helpers/lazyImageLoading';
+import { lazyImageLoading } from '../helpers';
 
 export default {
   data() {

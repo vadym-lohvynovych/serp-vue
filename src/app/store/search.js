@@ -1,5 +1,5 @@
 import * as api from '../../utils/api';
-import capitalize from '../helpers/capitalize';
+import { capitalize } from '../helpers';
 
 export default {
   namespaced: true,
