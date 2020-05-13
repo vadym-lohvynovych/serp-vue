@@ -32,12 +32,14 @@ import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 import Pagination from '../components/Pagination.vue';
+import { lazyImageLoading } from '../helpers';
 
 export default {
   data() {
     return {
       isLazyEventListenerActive: false,
-      contentBlock: null
+      contentBlock: null,
+      lazy: null
     };
   },
   computed: {
@@ -49,45 +51,6 @@ export default {
 
   methods: {
     ...mapActions('search', ['fetchItems']),
-
-    lazyLoad() {
-      let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'));
-      let active = false;
-      if (active === false) {
-        active = true;
-        setTimeout(() => {
-          lazyImages.forEach(lazyImage => {
-            if (
-              lazyImage.getBoundingClientRect().top - 200 <=
-                window.innerHeight &&
-              lazyImage.getBoundingClientRect().bottom >= 0 &&
-              getComputedStyle(lazyImage).display !== 'none'
-            ) {
-              lazyImage.src = lazyImage.dataset.src;
-              lazyImage.classList.remove('lazy');
-              lazyImages = lazyImages.filter(image => image !== lazyImage);
-
-              if (lazyImages.length === 0) {
-                if (this.isLazyEventListenerActive) {
-                  this.removeLazyEventListener();
-                }
-              }
-            }
-          });
-          active = false;
-        }, 200);
-      }
-    },
-
-    addLazyEventListener() {
-      this.contentBlock.addEventListener('scroll', this.lazyLoad);
-      this.isLazyEventListenerActive = true;
-    },
-
-    removeLazyEventListener() {
-      this.contentBlock.removeEventListener('scroll', this.lazyLoad);
-      this.isLazyEventListenerActive = false;
-    },
 
     changePage(page) {
       const { searchType, searchQuery } = this.$route.query;
@@ -103,23 +66,17 @@ export default {
 
   watch: {
     searchResult(value) {
-      if (value.items.length) {
-        if (!this.isLazyEventListenerActive) {
-          this.addLazyEventListener();
-        }
-
-        setTimeout(() => {
-          this.lazyLoad();
-        }, 0);
-      }
+      value.items.length && setTimeout(this.lazy.update);
     }
   },
 
   mounted() {
     this.contentBlock = document.querySelector('.content');
-    this.lazyLoad();
-    this.contentBlock.scrollTo(0, 0);
-    this.addLazyEventListener();
+    this.lazy = lazyImageLoading('img[data-lazy]', 'lazy');
+  },
+
+  destroyed() {
+    this.lazy.unsubscribe();
   },
 
   components: {

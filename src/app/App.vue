@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto flex flex-wrap">
     <div
-      class="sidebar-wrapper w-full lg:w-3/12 xl:w-1/5 relative shadow-xl bg-gray-900 lg:px-5"
+      class="sidebar-wrapper lg:sticky top-0 w-full lg:w-3/12 xl:w-1/5 relative shadow-xl bg-gray-900 lg:px-5"
       :class="{active: isSidebarActive}"
     >
       <Sidebar @toggleSidebarView="toggleSidebarView" :isActive="isSidebarActive" />
@@ -40,27 +40,14 @@ a,
 }
 
 .sidebar-wrapper {
-  transition: 0.35s ease-out;
-}
-.sidebar-wrapper,
-.content {
   height: 100vh;
 }
-.content {
-  overflow-y: scroll;
-}
+
 @media screen and (max-width: 1023px) {
   .sidebar-wrapper,
   .content {
     height: auto;
     overflow: auto;
-  }
-}
-
-@media screen and (max-width: 430px) {
-  .sidebar-wrapper {
-    left: -100%;
-    width: 100%;
   }
 }
 </style>

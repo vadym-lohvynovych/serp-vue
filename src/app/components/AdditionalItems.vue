@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import changeRoute from '../helpers/changeRoute';
+import { changeItemRoute } from '../helpers';
 
 export default {
   props: {
@@ -32,7 +32,7 @@ export default {
       item.role ? `${item.name} Role: ${item.role}` : item.name,
 
     goToItemPage(url) {
-      changeRoute(url, this.$route, this.$router);
+      changeItemRoute(url, this.$route, this.$router);
     }
   },
 

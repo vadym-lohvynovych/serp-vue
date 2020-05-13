@@ -8,7 +8,8 @@
       <div class="object-cover object-center">
         <div class="image-box with-transition">
           <img
-            class="img with-transition mx-auto cursor-pointer w-full lazy"
+            class="img with-transition mx-auto cursor-pointer w-full"
+            data-lazy
             :src="placeholder"
             :data-src="path"
             alt="search-image"
@@ -25,8 +26,7 @@
 <script>
 import { mapActions } from 'vuex';
 import placeholder from '../images/placeholder.png';
-import changeRoute from '../helpers/changeRoute';
-import getPathFromThumbnail from '../helpers/getPathFromThumbnail';
+import { changeItemRoute, getPathFromThumbnail } from '../helpers';
 
 export default {
   props: {
@@ -49,7 +49,7 @@ export default {
     ...mapActions('search', ['makeItemVisible', 'setSearchType']),
 
     goToItemPage() {
-      changeRoute(this.item.resourceURI, this.$route, this.$router);
+      changeItemRoute(this.item.resourceURI, this.$route, this.$router);
     }
   },
 
@@ -62,7 +62,7 @@ export default {
 <style lang="scss" scoped>
 img {
   transition: transform 0.2s ease-in-out, filter 0.3s ease-in;
-  &.lazy {
+  &[data-lazy] {
     filter: blur(5px);
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="search-type font-hairline mb-2 lg:mb-5">
+  <div class="search-type font-hairline mb-4 lg:mb-5">
     <h2 class="text-center my-2 lg:my-5">Categories</h2>
 
     <div class="flex items-center justify-center lg:block">
@@ -9,9 +9,9 @@
         class="text-center lg:text-right flex justify-center lg:justify-end"
       >
         <p
-          class="search-type-item mx-1 lg:mx-0 with-transition relative text-right lg:text-xl lg:w-4/5 font-semibold lg:font-bold px-5 my-1 cursor-pointer"
+          class="search-type-item mx-1 lg:mx-0 with-transition relative text-right lg:text-xl lg:w-4/5 font-semibold lg:font-bold px-5 lg:my-1 cursor-pointer"
           :class="{active: type === searchType}"
-          @click="setSearchType(type)"
+          @click="changeType(type)"
         >{{ type | capitalize }}</p>
       </div>
     </div>
@@ -21,6 +21,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { searchTypes } from '../../utils/searchTypes';
+import { capitalize } from '../helpers';
 
 export default {
   data() {
@@ -35,13 +36,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('search', ['setSearchType']),
-    changeSearchType() {}
+    ...mapActions('search', ['setSearchType', 'fetchItems']),
+
+    changeType(type) {
+      const { searchQuery } = this.$route.query;
+      this.setSearchType(type);
+      if (searchQuery) {
+        this.$router.push({ query: { searchType: type, searchQuery } });
+        this.fetchItems({ searchQuery });
+      }
+    }
   },
 
   filters: {
     capitalize(val) {
-      return val.charAt(0).toUpperCase() + val.slice(1);
+      return capitalize(val);
     }
   }
 };
