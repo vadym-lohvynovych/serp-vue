@@ -7,10 +7,9 @@ export default {
   actions: {
     fetchItems({ commit, state }, { searchQuery, offset, onScroll = false }) {
       const action = onScroll ? 'setScrollLoading' : 'setLoading';
-      commit(action, true);
-
       const methodName = `search${capitalize(state.searchType)}`;
 
+      commit(action, true);
       commit('setError', false);
 
       api[methodName](searchQuery, offset)
