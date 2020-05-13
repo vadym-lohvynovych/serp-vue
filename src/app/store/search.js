@@ -22,7 +22,7 @@ export default {
               }
             : data;
 
-          commit('updateSearchResult', dataObject);
+          commit('setSearchResult', dataObject);
         })
         .catch(error => commit('setError', error))
         .finally(() => commit(action, false));
@@ -56,7 +56,7 @@ export default {
       state.scrollLoading = value;
     },
 
-    updateSearchResult(state, items) {
+    setSearchResult(state, items) {
       const { results, ...rest } = items;
 
       state.searchResult = {
