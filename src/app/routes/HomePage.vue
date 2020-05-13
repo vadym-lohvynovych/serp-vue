@@ -65,21 +65,11 @@ export default {
   methods: {
     ...mapActions('search', ['fetchItems', 'fetchMore']),
 
-    changePage(page) {
-      const { searchType, searchQuery } = this.$route.query;
-
-      this.$router.push({ query: { searchType, searchQuery, page } });
-
-      this.fetchItems({
-        searchQuery,
-        offset: (page - 1) * this.searchResult.limit
-      });
-    },
-
     loadNextItems() {
-      this.fetchMore({
+      this.fetchItems({
         searchQuery: this.$route.query.searchQuery,
-        offset: this.searchResult.items.length
+        offset: this.searchResult.items.length,
+        onScroll: true
       });
     }
   },

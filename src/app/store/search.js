@@ -5,17 +5,27 @@ export default {
   namespaced: true,
 
   actions: {
-    fetchItems({ commit, state }, { searchQuery, offset }) {
-      commit('setLoading', true);
+    fetchItems({ commit, state }, { searchQuery, offset, onScroll = false }) {
+      const action = onScroll ? 'setScrollLoading' : 'setLoading';
+      commit(action, true);
 
       const methodName = `search${capitalize(state.searchType)}`;
 
       commit('setError', false);
 
       api[methodName](searchQuery, offset)
-        .then(({ data }) => commit('updateSearchResult', data))
+        .then(({ data }) => {
+          const dataObject = onScroll
+            ? {
+                ...data,
+                results: [...state.searchResult.items, ...data.results]
+              }
+            : data;
+
+          commit('updateSearchResult', dataObject);
+        })
         .catch(error => commit('setError', error))
-        .finally(() => commit('setLoading', false));
+        .finally(() => commit(action, false));
     },
 
     getItem({ commit }, { id, itemType }) {
@@ -30,24 +40,6 @@ export default {
         .then(({ data }) => commit('setCurrentItem', data.results[0]))
         .catch(error => commit('setError', error))
         .finally(() => commit('setLoading', false));
-    },
-
-    fetchMore({ commit, state }, { searchQuery, offset }) {
-      commit('setScrollLoading', true);
-
-      const methodName = `search${capitalize(state.searchType)}`;
-
-      commit('setError', false);
-
-      api[methodName](searchQuery, offset)
-        .then(({ data }) =>
-          commit('updateSearchResult', {
-            ...data,
-            results: [...state.searchResult.items, ...data.results]
-          })
-        )
-        .catch(error => commit('setError', error))
-        .finally(() => commit('setScrollLoading', false));
     },
 
     setSearchType({ commit }, name) {

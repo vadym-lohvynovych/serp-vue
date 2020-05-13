@@ -7,8 +7,7 @@ export default {
   methods: {
     onScroll() {
       const { bottom } = this.$refs.b.getBoundingClientRect();
-      const onScreen = bottom < window.innerHeight;
-      if (onScreen) this.$emit('scrolled');
+      if (bottom < window.innerHeight) this.$emit('scrolled');
     }
   },
   mounted() {
