@@ -2,7 +2,7 @@
   <div class="w-1/2 sm:w-1/3 md:w-1/4 px-3 xl:px-8 mb-5">
     <div
       class="search-result-item with-transition relative rounded hover:text-pink-500"
-      :class="{ 'opacity-0': item.visibility === 'hidden' }"
+      :class="{ 'opacity-0': !visible }"
       @click="goToItemPage"
     >
       <div class="object-cover object-center">
@@ -35,7 +35,8 @@ export default {
 
   data() {
     return {
-      placeholder
+      placeholder,
+      visible: false
     };
   },
 
@@ -54,7 +55,8 @@ export default {
   },
 
   mounted() {
-    this.makeItemVisible(this.item.index);
+    // just for beauty appearance
+    setTimeout(() => (this.visible = true), 100);
   }
 };
 </script>

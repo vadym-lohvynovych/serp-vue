@@ -54,3 +54,5 @@ export function getPathFromThumbnail(thumbnail) {
 export function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
+
+// export function
