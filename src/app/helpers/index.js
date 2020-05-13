@@ -10,7 +10,8 @@ const createLazyListener = (selector, dataset) => () => {
 
       if (topIsUnderScreenOrHigher && botIsOnScreenOrBelow && visible) {
         lazyImage.src = lazyImage.dataset.src;
-        delete lazyImage.dataset[dataset];
+        //set timeout to remove dataset styles from image a little bit later
+        setTimeout(() => delete lazyImage.dataset[dataset], 200);
       }
     });
   }
