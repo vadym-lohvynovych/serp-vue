@@ -1,23 +1,18 @@
 const createLazyListener = (selector, dataset) => () => {
   let images = document.querySelectorAll(selector);
   if (images.length) {
-    images = [].slice.call(images);
-    setTimeout(() => {
-      images.forEach(lazyImage => {
-        const { top, bottom } = lazyImage.getBoundingClientRect();
-        const topIsUnderScreenOrHigher = top - 100 <= window.innerHeight;
-        const botIsOnScreenOrBelow = bottom >= 0;
-        const visible = lazyImage.style.display !== 'none';
+    images = Array.from(images);
+    images.forEach(lazyImage => {
+      const { top, bottom } = lazyImage.getBoundingClientRect();
+      const topIsUnderScreenOrHigher = top - 100 <= window.innerHeight;
+      const botIsOnScreenOrBelow = bottom >= 0;
+      const visible = lazyImage.style.display !== 'none';
 
-        if (topIsUnderScreenOrHigher && botIsOnScreenOrBelow && visible) {
-          lazyImage.src = lazyImage.dataset.src;
-
-          setTimeout(() => {
-            delete lazyImage.dataset[dataset];
-          }, 200);
-        }
-      });
-    }, 0);
+      if (topIsUnderScreenOrHigher && botIsOnScreenOrBelow && visible) {
+        lazyImage.src = lazyImage.dataset.src;
+        delete lazyImage.dataset[dataset];
+      }
+    });
   }
 };
 
