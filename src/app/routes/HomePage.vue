@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       isLazyEventListenerActive: false,
-      contentBlock: null,
       lazy: null
     };
   },
@@ -81,7 +80,6 @@ export default {
   },
 
   mounted() {
-    this.contentBlock = document.querySelector('.content');
     this.lazy = lazyImageLoading('img[data-lazy]', 'lazy');
   },
 
