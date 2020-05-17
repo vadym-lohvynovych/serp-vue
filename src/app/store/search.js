@@ -5,17 +5,26 @@ export default {
   namespaced: true,
 
   actions: {
-    fetchItems({ commit, state }, { searchQuery, offset }) {
-      commit('setLoading', true);
-
+    fetchItems({ commit, state }, { searchQuery, offset, onScroll = false }) {
+      const action = onScroll ? 'setScrollLoading' : 'setLoading';
       const methodName = `search${capitalize(state.searchType)}`;
 
+      commit(action, true);
       commit('setError', false);
 
       api[methodName](searchQuery, offset)
-        .then(({ data }) => commit('updateItems', data))
+        .then(({ data }) => {
+          const dataObject = onScroll
+            ? {
+                ...data,
+                results: [...state.searchResult.items, ...data.results]
+              }
+            : data;
+
+          commit('setSearchResult', dataObject);
+        })
         .catch(error => commit('setError', error))
-        .finally(() => commit('setLoading', false));
+        .finally(() => commit(action, false));
     },
 
     getItem({ commit }, { id, itemType }) {
@@ -34,10 +43,6 @@ export default {
 
     setSearchType({ commit }, name) {
       commit('setSearchType', name);
-    },
-
-    makeItemVisible(context, index, interval = 80) {
-      context.commit('makeItemVisible', { index, interval });
     }
   },
 
@@ -46,14 +51,16 @@ export default {
       state.isLoading = value;
     },
 
-    updateItems(state, items) {
+    setScrollLoading(state, value) {
+      state.scrollLoading = value;
+    },
+
+    setSearchResult(state, items) {
       const { results, ...rest } = items;
 
       state.searchResult = {
-        items: results.map(({ title, name, ...restInfo }, index) => ({
+        items: results.map(({ title, name, ...restInfo }) => ({
           title: title ? title : name,
-          index,
-          visibility: 'hidden',
           ...restInfo
         })),
         ...rest
@@ -73,12 +80,6 @@ export default {
       state.searchType = name;
     },
 
-    makeItemVisible(state, { index, interval }) {
-      setTimeout(() => {
-        state.searchResult.items[index].visibility = 'visible';
-      }, interval * index + 1);
-    },
-
     setError(state, error) {
       state.error = error;
     }
@@ -88,6 +89,7 @@ export default {
     searchResult: null,
     currentItem: null,
     isLoading: false,
+    scrollLoading: false,
     error: false,
     searchType: 'all'
   }

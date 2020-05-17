@@ -4,6 +4,10 @@
       <Loader v-if="isLoading" />
 
       <div v-else-if="searchResult && searchResult.items && searchResult.items.length">
+        <p
+          v-if="searchType === 'all'"
+          class="text-center pb-4 lg:pb-8 text-xl"
+        >Take a look at some random characters!</p>
         <div class="search-result-items flex flex-wrap">
           <SearchResultItem
             v-for="searchItem in searchResult.items"
@@ -11,17 +15,19 @@
             :item="searchItem"
           />
         </div>
-
-        <Pagination
-          v-if="searchType !== 'all'"
-          :limit="searchResult.limit"
-          :offset="searchResult.offset"
-          :total="searchResult.total"
-          @changePage="changePage"
-        />
       </div>
 
-      <p v-else-if="searchResult" class="text-center font-hairline my-8">Nothing to show :(</p>
+      <p
+        v-else-if="searchResult && !searchResult.items.length"
+        class="text-center font-hairline my-8"
+      >Nothing to show :(</p>
+
+      <Loader v-if="scrollLoading" />
+
+      <InfinityScroll
+        v-else-if="!isLoading && searchType !== 'all' && searchResult && searchResult.items.length !== searchResult.total"
+        @scrolled="loadNextItems"
+      />
     </ErrorBoundary>
   </div>
 </template>
@@ -32,34 +38,37 @@ import Loader from '../components/Loader.vue';
 import SearchResultItem from '../components/SearchResultItem.vue';
 import ErrorBoundary from '../components/ErrorBoundary.vue';
 import Pagination from '../components/Pagination.vue';
+import InfinityScroll from '../components/InfinityScroll.vue';
 import { lazyImageLoading } from '../helpers';
 
 export default {
   data() {
     return {
       isLazyEventListenerActive: false,
-      contentBlock: null,
       lazy: null
     };
   },
   computed: {
-    ...mapState('search', ['searchResult', 'isLoading', 'error', 'searchType']),
+    ...mapState('search', [
+      'searchResult',
+      'isLoading',
+      'scrollLoading',
+      'error',
+      'searchType'
+    ]),
     title() {
       return this.$route.query.title;
     }
   },
 
   methods: {
-    ...mapActions('search', ['fetchItems']),
+    ...mapActions('search', ['fetchItems', 'fetchMore']),
 
-    changePage(page) {
-      const { searchType, searchQuery } = this.$route.query;
-
-      this.$router.push({ query: { searchType, searchQuery, page } });
-
+    loadNextItems() {
       this.fetchItems({
-        searchQuery,
-        offset: (page - 1) * this.searchResult.limit
+        searchQuery: this.$route.query.searchQuery,
+        offset: this.searchResult.items.length,
+        onScroll: true
       });
     }
   },
@@ -71,7 +80,6 @@ export default {
   },
 
   mounted() {
-    this.contentBlock = document.querySelector('.content');
     this.lazy = lazyImageLoading('img[data-lazy]', 'lazy');
   },
 
@@ -83,7 +91,8 @@ export default {
     Loader,
     SearchResultItem,
     ErrorBoundary,
-    Pagination
+    Pagination,
+    InfinityScroll
   }
 };
 </script>
