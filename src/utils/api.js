@@ -17,21 +17,21 @@ async function getResource(url) {
 }
 
 async function searchCharacters(searchQuery, offset = 0) {
-  const query = createQueryParameter(searchQuery, 'name');
+  const query = createQueryParameter(searchQuery, 'nameStartsWith');
   const url = `${_defaultPath}characters?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
 }
 
 async function searchComics(searchQuery, offset = 0) {
-  const query = createQueryParameter(searchQuery, 'title');
+  const query = createQueryParameter(searchQuery, 'titleStartsWith');
   const url = `${_defaultPath}comics?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
 }
 
 async function searchSeries(searchQuery, offset = 0) {
-  const query = createQueryParameter(searchQuery, 'title');
+  const query = createQueryParameter(searchQuery, 'titleStartsWith');
   const url = `${_defaultPath}comics?offset=${offset}${query}&apikey=${_key}`;
 
   return await getResource(url);
